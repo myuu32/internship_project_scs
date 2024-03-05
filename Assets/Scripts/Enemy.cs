@@ -8,16 +8,23 @@ public class Enemy : MonoBehaviour
     public string ItemType;
     public Mesh mesh;
 
+    public enum MovementDirection
+    {
+        LeftRight,
+        ForwardBackward
+    }
+
     [Header("Movement Settings")]
     [Tooltip("Movement speed of the enemy")]
     public float moveSpeed = 2f;
     [Tooltip("Turn speed of the enemy")]
     public float turnSpeed = 5f;
     [Tooltip("How far the enemy can move from its starting position")]
-    [Range(1f, 10f)]
+    [Range(1f, 100f)]
     public float moveDistance = 5f;
     private Vector3 startPosition;
     private bool movingRight = true;
+    public MovementDirection movementDirection = MovementDirection.LeftRight;
 
     [Header("Attack Settings")]
     [Tooltip("Prefab of the bullet to shoot")]
@@ -48,11 +55,32 @@ public class Enemy : MonoBehaviour
 
     void Move()
     {
-        // 移動ロジック
-        float step = moveSpeed * Time.deltaTime * (movingRight ? 1 : -1);
-        transform.position += new Vector3(step, 0, 0);
 
-        if (Mathf.Abs(transform.position.x - startPosition.x) >= moveDistance)
+        float step = moveSpeed * Time.deltaTime;
+        Vector3 moveVector;
+
+        switch (movementDirection)
+        {
+            case MovementDirection.LeftRight:
+                moveVector = new Vector3(step * (movingRight ? 1 : -1), 0, 0);
+                break;
+            case MovementDirection.ForwardBackward:
+                moveVector = new Vector3(0, 0, step * (movingRight ? 1 : -1));
+                break;
+            default:
+                moveVector = Vector3.zero;
+                break;
+        }
+
+        transform.position += moveVector;
+
+        if (movementDirection == MovementDirection.LeftRight &&
+            Mathf.Abs(transform.position.x - startPosition.x) >= moveDistance)
+        {
+            movingRight = !movingRight;
+        }
+        else if (movementDirection == MovementDirection.ForwardBackward &&
+                 Mathf.Abs(transform.position.z - startPosition.z) >= moveDistance)
         {
             movingRight = !movingRight;
         }

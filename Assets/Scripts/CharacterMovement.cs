@@ -3,17 +3,27 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
-    public float moveSpeed = 5.0f;
-    public float turnSmoothTime = 0.1f;
-    public float jumpForce = 10.0f;
-    public Transform handTransform;
-    public GameObject handWeaponPrefab;
-    public float throwForce = 10f;
-    private GameObject currentWeapon;
-    private bool isJumping = false;
-    private float turnSmoothVelocity;
-    public GrabItem grabItem;
-    public Animator animator;
+    [Tooltip("Movement speed of the character")]
+    public float moveSpeed = 5.0f; // キャラクターの移動速度
+    [Tooltip("Smooth time for turning")]
+    public float turnSmoothTime = 0.1f; // 曲がる時の滑らかさ
+    [Tooltip("Jump force of the character")]
+    public float jumpForce = 10.0f; // キャラクターのジャンプ力
+    public Transform handTransform; // プレイヤーの手のトランスフォーム
+    public GameObject handWeaponPrefab; // 手に持つ武器のプレハブ
+    [Tooltip("Force applied when throwing the weapon")]
+    public float throwForce = 10f; // 武器を投げる力
+    private GameObject currentWeapon; // 現在の武器
+    private bool isJumping = false; // ジャンプ中かどうかのフラグ
+    private float turnSmoothVelocity; // 回転の平滑化に使用
+    public GrabItem grabItem; // アイテムを掴むコンポーネント
+    public Animator animator; // アニメーター
+
+    public GameObject CurrentWeapon
+    {
+        get { return currentWeapon; }
+        set { currentWeapon = value; }
+    }
 
 
     void Awake()
@@ -58,6 +68,7 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
+    // 移動とジャンプの処理
     void MoveAndJump()
     {
         float horizontal = Input.GetAxis("Horizontal");
@@ -155,5 +166,19 @@ public class CharacterMovement : MonoBehaviour
     void FixedUpdate()
     {
         transform.rotation = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f);
+    }
+
+    public void ClearCurrentWeapon()
+    {
+        if (currentWeapon != null)
+        {
+            currentWeapon.transform.SetParent(null);
+            Rigidbody rb = currentWeapon.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.isKinematic = false;
+            }
+            currentWeapon = null; 
+        }
     }
 }

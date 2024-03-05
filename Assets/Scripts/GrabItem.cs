@@ -3,20 +3,22 @@ using UnityEngine;
 
 public class GrabItem : MonoBehaviour
 {
-    public Transform playerHand;
-    public float grabSpeed = 1f;
-    private GameObject targetItem;
-    private bool isHoldingItem = false;
-    public CharacterMovement characterMovement;
+    public Transform playerHand; // プレイヤーの手
+    public float grabSpeed = 1f; // アイテムを掴む速度
+    private GameObject targetItem; // ターゲットアイテム
+    private bool isHoldingItem = false; // アイテムを持っているかどうか
+    public CharacterMovement characterMovement; // キャラクターの動きを制御するコンポーネント
 
-    private bool canGrab = true;
-    public float grabCooldown = 0.5f; 
+    private bool inTriggerZone = false; 
+
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J) && canGrab)
+        // Jキーが押された時の処理
+        if (Input.GetKeyDown(KeyCode.J))
         {
-            if (!isHoldingItem && targetItem != null)
+            // アイテムを持っていない、ターゲットアイテムが存在し、トリガーゾーン内であれば
+            if (!isHoldingItem && targetItem != null && inTriggerZone) 
             {
                 StartCoroutine(GrabItemCoroutine(targetItem));
             }
@@ -27,22 +29,26 @@ public class GrabItem : MonoBehaviour
         }
     }
 
+    // トリガーゾーンに入った時の処理
     private void OnTriggerEnter(Collider other)
     {
         if ((other.CompareTag("Item") || other.CompareTag("Interactable")) && !isHoldingItem)
         {
-            targetItem = other.transform.root.gameObject;
+            targetItem = other.transform.root.gameObject; 
+            inTriggerZone = true; 
         }
     }
 
+    // トリガーゾーンから出た時の処理
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject == targetItem)
+        if (other.transform.root.gameObject == targetItem)
         {
-            targetItem = null;
+            inTriggerZone = false;
         }
     }
 
+    // アイテムを掴む処理
     IEnumerator GrabItemCoroutine(GameObject item)
     {
         characterMovement.GetComponent<Rigidbody>().isKinematic = true;
@@ -63,37 +69,24 @@ public class GrabItem : MonoBehaviour
         item.transform.localPosition = Vector3.zero;
         item.transform.localRotation = Quaternion.identity;
         Rigidbody rb = item.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.isKinematic = true;
-        }
+        if (rb != null) rb.isKinematic = true;
 
         Collider itemCollider = item.GetComponent<Collider>();
-        if (itemCollider != null)
-        {
-            itemCollider.enabled = false;
-        }
+        if (itemCollider != null) itemCollider.enabled = false;
 
-        isHoldingItem = true;
         characterMovement.SetCurrentWeapon(item);
         characterMovement.GetComponent<Rigidbody>().isKinematic = false;
 
+        isHoldingItem = true;// アイテムを持っている状態に
     }
 
-    public IEnumerator GrabCooldown()
-    {
-        canGrab = false;
-        yield return new WaitForSeconds(grabCooldown);
-        canGrab = true;
-    }
-
+    // アイテムを離す処理
     public void DropItem()
     {
-        if (characterMovement != null)
+        if (characterMovement != null && isHoldingItem)
         {
-            characterMovement.DropWeapon();
+            characterMovement.DropWeapon(); // アイテムを離す
+            isHoldingItem = false; // アイテムを持っていない状態に
         }
-        isHoldingItem = false;
-        StartCoroutine(GrabCooldown());
     }
 }
