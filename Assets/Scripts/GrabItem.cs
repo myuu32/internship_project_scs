@@ -3,13 +3,16 @@ using UnityEngine;
 
 public class GrabItem : MonoBehaviour
 {
+    [Header("Player's Hand")]
     public Transform playerHand; // プレイヤーの手
+    [Header("Item Grabbing Speed")]
+    [Tooltip("アイテムを掴む速度")]
     public float grabSpeed = 1f; // アイテムを掴む速度
     private GameObject targetItem; // ターゲットアイテム
     private bool isHoldingItem = false; // アイテムを持っているかどうか
     public CharacterMovement characterMovement; // キャラクターの動きを制御するコンポーネント
 
-    private bool inTriggerZone = false; 
+    private bool inTriggerZone = false;
 
 
     void Update()

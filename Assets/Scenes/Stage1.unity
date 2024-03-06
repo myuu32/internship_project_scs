@@ -5610,7 +5610,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: Continue
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5637,8 +5637,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 0
@@ -6006,6 +6006,74 @@ LightingSettings:
   m_PVRTiledBaking: 0
   m_NumRaysToShootPerTexel: -1
   m_RespectSceneVisibilityWhenBakingGI: 0
+--- !u!1001 &1443692567
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2516154510617065635, guid: 85c45819b5e964fde99a9bda9b2a574b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 577.3029
+      objectReference: {fileID: 0}
+    - target: {fileID: 2516154510617065635, guid: 85c45819b5e964fde99a9bda9b2a574b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 226.78293
+      objectReference: {fileID: 0}
+    - target: {fileID: 2516154510617065635, guid: 85c45819b5e964fde99a9bda9b2a574b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -28406.955
+      objectReference: {fileID: 0}
+    - target: {fileID: 2516154510617065635, guid: 85c45819b5e964fde99a9bda9b2a574b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2516154510617065635, guid: 85c45819b5e964fde99a9bda9b2a574b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2516154510617065635, guid: 85c45819b5e964fde99a9bda9b2a574b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2516154510617065635, guid: 85c45819b5e964fde99a9bda9b2a574b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2516154510617065635, guid: 85c45819b5e964fde99a9bda9b2a574b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2516154510617065635, guid: 85c45819b5e964fde99a9bda9b2a574b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2516154510617065635, guid: 85c45819b5e964fde99a9bda9b2a574b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7256046425694326622, guid: 85c45819b5e964fde99a9bda9b2a574b,
+        type: 3}
+      propertyPath: m_Name
+      value: SceneManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 85c45819b5e964fde99a9bda9b2a574b, type: 3}
 --- !u!43 &1458679004
 Mesh:
   m_ObjectHideFlags: 0
@@ -6303,7 +6371,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: Exit
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6330,8 +6398,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 0
@@ -6688,7 +6756,7 @@ GameObject:
   - component: {fileID: 1981837164}
   - component: {fileID: 1981837163}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Continue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6813,3 +6881,4 @@ SceneRoots:
   - {fileID: 1817838164}
   - {fileID: 1069281076}
   - {fileID: 1283576136}
+  - {fileID: 1443692567}

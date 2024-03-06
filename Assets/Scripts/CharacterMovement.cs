@@ -3,15 +3,15 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
-    [Tooltip("Movement speed of the character")]
+    [Tooltip("キャラクターの移動速度")]
     public float moveSpeed = 5.0f; // キャラクターの移動速度
-    [Tooltip("Smooth time for turning")]
+    [Tooltip("曲がる時の滑らかさ")]
     public float turnSmoothTime = 0.1f; // 曲がる時の滑らかさ
-    [Tooltip("Jump force of the character")]
+    [Tooltip("キャラクターのジャンプ力")]
     public float jumpForce = 10.0f; // キャラクターのジャンプ力
     public Transform handTransform; // プレイヤーの手のトランスフォーム
     public GameObject handWeaponPrefab; // 手に持つ武器のプレハブ
-    [Tooltip("Force applied when throwing the weapon")]
+    [Tooltip("武器を投げる力")]
     public float throwForce = 10f; // 武器を投げる力
     private GameObject currentWeapon; // 現在の武器
     private bool isJumping = false; // ジャンプ中かどうかのフラグ
@@ -28,7 +28,7 @@ public class CharacterMovement : MonoBehaviour
 
     void Awake()
     {
-        grabItem = GetComponent<GrabItem>(); 
+        grabItem = GetComponent<GrabItem>();
     }
 
     void Update()
@@ -75,13 +75,13 @@ public class CharacterMovement : MonoBehaviour
         float vertical = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
-        // Get the camera's forward and right vectors, ignoring the y component
+        // カメラの前方と右方向ベクトルを取得し、y成分を無視
         Vector3 cameraForward = Camera.main.transform.forward;
         cameraForward.y = 0;
         Vector3 cameraRight = Camera.main.transform.right;
         cameraRight.y = 0;
 
-        // Apply the camera's orientation to the input direction
+        // カメラの向きを入力方向に適用
         Vector3 moveDirection = cameraForward * vertical + cameraRight * horizontal;
 
         if (moveDirection.magnitude >= 0.1f)
@@ -131,20 +131,20 @@ public class CharacterMovement : MonoBehaviour
 
     public void DropWeapon()
     {
-        if (currentWeapon == null) return; 
+        if (currentWeapon == null) return;
 
         currentWeapon.transform.SetParent(null);
         Rigidbody rb = currentWeapon.GetComponent<Rigidbody>();
         if (rb != null)
-            {
-                rb.isKinematic = false;
-            }
+        {
+            rb.isKinematic = false;
+        }
 
         Collider weaponCollider = currentWeapon.GetComponent<Collider>();
         if (weaponCollider != null)
-            {
-                weaponCollider.enabled = true;
-            }
+        {
+            weaponCollider.enabled = true;
+        }
 
         currentWeapon.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
         currentWeapon = null;
@@ -178,7 +178,7 @@ public class CharacterMovement : MonoBehaviour
             {
                 rb.isKinematic = false;
             }
-            currentWeapon = null; 
+            currentWeapon = null;
         }
     }
 }

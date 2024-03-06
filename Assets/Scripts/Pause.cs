@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class PauseManager : MonoBehaviour
 {
-    public GameObject pauseMenu; // Reference to the pause menu object
+    public GameObject pauseMenu; // ポーズメニューオブジェクトへの参照
 
     private bool isPaused = false;
 
     void Start()
     {
-        // Disable the pause menu at the beginning of the game
+        // ゲームの開始時にポーズメニューを無効にする
         if (pauseMenu != null)
         {
             pauseMenu.SetActive(false);
@@ -21,10 +21,9 @@ public class PauseManager : MonoBehaviour
 
     void Update()
     {
-        // Check if the "Pause" key is pressed (e.g., the "P" key)
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            // Toggle between pause and resume
+            // ポーズと再開を切り替える
             if (isPaused)
             {
                 ResumeGame();
@@ -38,24 +37,24 @@ public class PauseManager : MonoBehaviour
 
     void PauseGame()
     {
-        Time.timeScale = 0f; // Set the time scale to 0 to pause the game
+        Time.timeScale = 0f; // ゲームを一時停止するために時間の尺度を0に設定
         isPaused = true;
         Debug.Log("Game paused.");
 
-        // Enable the pause menu
+        // ポーズメニューを有効にする
         if (pauseMenu != null)
         {
             pauseMenu.SetActive(true);
         }
     }
 
-    void ResumeGame()
+    public void ResumeGame()
     {
-        Time.timeScale = 1f; // Set the time scale back to 1 to resume the game
+        Time.timeScale = 1f; // ゲームを再開するために時間の尺度を1に設定
         isPaused = false;
         Debug.Log("Game resumed.");
 
-        // Disable the pause menu
+        // ポーズメニューを無効にする
         if (pauseMenu != null)
         {
             pauseMenu.SetActive(false);

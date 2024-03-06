@@ -15,11 +15,11 @@ public class Enemy : MonoBehaviour
     }
 
     [Header("Movement Settings")]
-    [Tooltip("Movement speed of the enemy")]
+    [Tooltip("敵の移動速度")]
     public float moveSpeed = 2f;
-    [Tooltip("Turn speed of the enemy")]
+    [Tooltip("敵の回転速度")]
     public float turnSpeed = 5f;
-    [Tooltip("How far the enemy can move from its starting position")]
+    [Tooltip("敵が移動できる最大距離")]
     [Range(1f, 100f)]
     public float moveDistance = 5f;
     private Vector3 startPosition;
@@ -27,11 +27,11 @@ public class Enemy : MonoBehaviour
     public MovementDirection movementDirection = MovementDirection.LeftRight;
 
     [Header("Attack Settings")]
-    [Tooltip("Prefab of the bullet to shoot")]
+    [Tooltip("撃つ弾のプレハブ")]
     public GameObject bulletPrefab;
-    [Tooltip("Point from where the bullet is fired")]
+    [Tooltip("弾が発射されるポイント")]
     public Transform firePoint;
-    [Tooltip("How often the enemy can shoot (shots per second)")]
+    [Tooltip("敵が攻撃できる頻度（秒間の発射数）")]
     [Range(0.1f, 5f)]
     public float fireRate = 1f;
     private float lastFireTime;

@@ -2,47 +2,47 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-    public Vector3 offset; // Offset from the target
-    public Vector2 boundsCenter; // Center of boundary restrictions
-    public Vector2 boundsSize; // Size of boundary restrictions
-    public float smoothSpeed = 0.125f; // Smoothing factor for camera movement
-    public float minBoundsCenter = 20f; // Minimum bounds center value
-    public float maxBoundsCenter = 50f; // Maximum bounds center value
+    public Vector3 offset; // ターゲットからのオフセット
+    public Vector2 boundsCenter; // 境界制限の中心
+    public Vector2 boundsSize; // 境界制限のサイズ
+    public float smoothSpeed = 0.125f; // カメラ移動のスムージング係数
+    public float minBoundsCenter = 20f; // 最小境界中心値
+    public float maxBoundsCenter = 50f; // 最大境界中心値
 
-    private GameObject[] players; // Array to store player objects
-    private Vector3 desiredPosition; // Desired position for the camera
+    private GameObject[] players; // プレーヤーオブジェクトを格納する配列
+    private Vector3 desiredPosition; // カメラの望ましい位置
 
     void FixedUpdate()
     {
-        // Check if there are at least two players
+        // 少なくとも2つのプレーヤーがいるかどうかを確認
         players = GameObject.FindGameObjectsWithTag("Player");
         if (players.Length < 2)
         {
-            Debug.LogWarning("Need at least two players with the 'Player' tag.");
+            Debug.LogWarning("'Player' タグを持つプレーヤーが少なくとも2人必要です。");
             return;
         }
 
-        // Convert GameObject array to Transform array
+        // GameObject 配列を Transform 配列に変換
         Transform[] playerTransforms = new Transform[players.Length];
         for (int i = 0; i < players.Length; i++)
         {
             playerTransforms[i] = players[i].transform;
         }
 
-        // Calculate the center position between players
+        // プレーヤー間の中心位置を計算
         Vector3 centerPosition = (playerTransforms[0].position + playerTransforms[1].position) / 2f;
         boundsCenter.y = Mathf.Lerp(minBoundsCenter, maxBoundsCenter, Vector3.Distance(playerTransforms[0].position, playerTransforms[1].position) / 50f);
 
-        // Calculate the desired position for the camera
+        // カメラの望ましい位置を計算
         desiredPosition = centerPosition + offset;
 
-        // Apply boundary restrictions
+        // 境界制限を適用
         Vector2 minBounds = boundsCenter - boundsSize / 2f;
         Vector2 maxBounds = boundsCenter + boundsSize / 2f;
         desiredPosition.x = Mathf.Clamp(desiredPosition.x, minBounds.x, maxBounds.x);
         desiredPosition.y = Mathf.Clamp(desiredPosition.y, minBounds.y, maxBounds.y);
 
-        // Smoothly move the camera towards the desired position
+        // カメラを望ましい位置にスムーズに移動
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
         transform.position = smoothedPosition;
     }

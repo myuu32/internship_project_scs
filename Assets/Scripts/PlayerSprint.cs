@@ -4,24 +4,24 @@ using UnityEngine;
 public class PlayerSprint : MonoBehaviour
 {
     [Header("Sprint Settings")]
-    [Tooltip("The speed at which the player sprints")]
+    [Tooltip("プレイヤーがスプリントする速度")]
     public float sprintSpeed = 10f; // 衝刺速度
-    [Tooltip("Maximum duration of the sprint")]
-    public float sprintTime = 2f; // 衝刺持続時間の最大値
-    [Tooltip("Rotation speed during sprinting")]
-    public float rotationSpeed = 5f; // 回転速度
+    [Tooltip("スプリントの最大持続時間")]
+    public float sprintTime = 2f; // 衝刺持續時間的最大值
+    [Tooltip("スプリント中の回転速度")]
+    public float rotationSpeed = 5f; // 回轉速度
 
     [Header("Sliding Settings")]
-    [Tooltip("Duration of the sliding effect after sprinting")]
-    public float slideDuration = 0.5f; // スライディング効果の持続時間
-    [Tooltip("Speed multiplier for sliding")]
-    public float slideSpeedMultiplier = 0.5f; // スライディング速度の乗数
+    [Tooltip("スプリント後のスライディング効果の持続時間")]
+    public float slideDuration = 0.5f; // 滑行效果持續時間
+    [Tooltip("スライディングの速度乗数")]
+    public float slideSpeedMultiplier = 0.5f; // 滑行速度乘數
 
     [Header("Cooldown Settings")]
-    [Tooltip("Multiplier for calculating the cooldown time based on the sprint time")]
-    public float sprintCooldownMultiplier = 1f; // 冷却時間の乗数
+    [Tooltip("スプリント時間を基準としたクールダウン時間の乗数")]
+    public float sprintCooldownMultiplier = 1f; // 冷卻時間乘數
 
-    private float remainingSprintTime; // 残りの衝刺時間
+    private float remainingSprintTime; // 殘りのスプリント時間
     private float slideTimer = 0;
     private float cooldownTimer = 0;
     private bool isSprinting = false;
@@ -36,13 +36,13 @@ public class PlayerSprint : MonoBehaviour
 
     void HandleSprintInput()
     {
-        // 左Shiftキーで衝刺開始の入力を処理
+        // 左Shiftキーでスプリント開始の入力を処理
         if (Input.GetKeyDown(KeyCode.LeftShift) && cooldownTimer <= 0 && !isSprinting)
         {
             StartSprint();
         }
 
-        // 左Shiftキーを離すことで衝刺終了の処理
+        // 左Shiftキーを離すことでスプリント終了の処理
         if (Input.GetKeyUp(KeyCode.LeftShift) && isSprinting)
         {
             EndSprint();
@@ -51,7 +51,7 @@ public class PlayerSprint : MonoBehaviour
 
     void HandleSprinting()
     {
-        // 衝刺処理
+        // スプリント処理
         if (isSprinting)
         {
             Quaternion lookRotation = Quaternion.LookRotation(slideDirection);
@@ -75,7 +75,7 @@ public class PlayerSprint : MonoBehaviour
             slideTimer -= Time.deltaTime;
         }
 
-        // 冷却時間の処理
+        // クールダウン時間の処理
         if (cooldownTimer > 0)
         {
             cooldownTimer -= Time.deltaTime;
