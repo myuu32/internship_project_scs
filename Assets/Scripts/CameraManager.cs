@@ -8,6 +8,8 @@ public class CameraManager : MonoBehaviour
     public float smoothSpeed = 0.125f; // カメラ移動のスムージング係数
     public float minBoundsCenter = 20f; // 最小境界中心値
     public float maxBoundsCenter = 50f; // 最大境界中心値
+    public float followSpeed = 5f; // 追跡速度
+    public AnimationCurve followCurve; // 追跡曲線
 
     private GameObject[] players; // プレーヤーオブジェクトを格納する配列
     private Vector3 desiredPosition; // カメラの望ましい位置
@@ -43,7 +45,8 @@ public class CameraManager : MonoBehaviour
         desiredPosition.y = Mathf.Clamp(desiredPosition.y, minBounds.y, maxBounds.y);
 
         // カメラを望ましい位置にスムーズに移動
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+        float t = followCurve.Evaluate(Time.deltaTime * followSpeed); // 追跡曲線の値を計算
+        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * t); // speed乘以t
         transform.position = smoothedPosition;
     }
 }
