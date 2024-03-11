@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PauseManager : MonoBehaviour
 {
-    public GameObject pauseMenu; // ポーズメニューオブジェクトへの参照
+    [SerializeField] private GameObject pauseMenu; // ポーズメニューオブジェクトへの参照
 
     private bool isPaused = false;
 

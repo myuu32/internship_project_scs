@@ -1,5 +1,6 @@
-using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using System.Collections;
 
 public class CharacterMovement : MonoBehaviour
 {
@@ -9,97 +10,91 @@ public class CharacterMovement : MonoBehaviour
     public float turnSmoothTime = 0.1f; // 曲がる時の滑らかさ
     [Tooltip("キャラクターのジャンプ力")]
     public float jumpForce = 10.0f; // キャラクターのジャンプ力
-    public Transform handTransform; // プレイヤーの手のトランスフォーム
-    public GameObject handWeaponPrefab; // 手に持つ武器のプレハブ
-    [Tooltip("武器を投げる力")]
-    public float throwForce = 10f; // 武器を投げる力
-    private GameObject currentWeapon; // 現在の武器
+
+    private Rigidbody rb;
     private bool isJumping = false; // ジャンプ中かどうかのフラグ
     private float turnSmoothVelocity; // 回転の平滑化に使用
-    public GrabItem grabItem; // アイテムを掴むコンポーネント
-    public Animator animator; // アニメーター
+    private Vector2 moveInput; // 移動入力
 
-    public GameObject CurrentWeapon
-    {
-        get { return currentWeapon; }
-        set { currentWeapon = value; }
-    }
+    public Transform playerHand; // プレイヤーの手
+    public float grabSpeed = 1f; // アイテムを掴む速度
+    private GameObject targetItem; // ターゲットアイテム
+    private bool isHoldingItem = false; // アイテムを持っているかどうか
+    private bool inTriggerZone = false;
+
+    private PlayerController controls; // Input Actionsのコントロール
+
+    public Animator animator; // アニメーター
+    public float throwForce = 10f; // 武器を投げる力
+    private bool canPickup = true;
 
 
     void Awake()
     {
-        grabItem = GetComponent<GrabItem>();
+        rb = GetComponent<Rigidbody>();
+        controls = new PlayerController();
+        controls.Player.Grab.performed += ctx => OnGrab();
+        controls.Player.Drop.performed += ctx => OnDrop();
+        controls.Player.Attack.performed += ctx => OnAttack();
+        controls.Player.Movement.performed += ctx => OnMove(ctx);
+        controls.Player.Jump.performed += ctx => OnJump();
     }
 
     void Update()
     {
-        MoveAndJump();
-
-        if (Input.GetKeyDown(KeyCode.K) && currentWeapon != null)
+        if (moveInput != Vector2.zero)
         {
-            if (currentWeapon.CompareTag("Interactable"))
-            {
-                Debug.Log("Interactable");
-                //Interactable();
-            }
-            else if (currentWeapon.CompareTag("Item"))
-            {
-                ThrowWeapon();
-            }
-            else
-            {
-                HandAttack();
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            if (currentWeapon != null)
-            {
-                if (grabItem != null)
-                {
-                    grabItem.DropItem();
-                }
-                else
-                {
-                    Debug.LogError("GrabItem reference not set in CharacterMovement.");
-                }
-            }
+            MoveCharacter(moveInput);
         }
     }
 
-    // 移動とジャンプの処理
-    void MoveAndJump()
+    void OnEnable()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-        Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
+        controls.Enable();
+    }
 
-        // カメラの前方と右方向ベクトルを取得し、y成分を無視
-        Vector3 cameraForward = Camera.main.transform.forward;
-        cameraForward.y = 0;
-        Vector3 cameraRight = Camera.main.transform.right;
-        cameraRight.y = 0;
+    void OnDisable()
+    {
+        controls.Disable();
+    }
 
-        // カメラの向きを入力方向に適用
-        Vector3 moveDirection = cameraForward * vertical + cameraRight * horizontal;
+    // 移動入力処理
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        moveInput = context.ReadValue<Vector2>();
+    }
+
+    void MoveCharacter(Vector2 input)
+    {
+        Vector3 moveDirection = new Vector3(input.x, 0f, input.y).normalized;
 
         if (moveDirection.magnitude >= 0.1f)
         {
-            float targetAngle = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg;
+            // カメラの前方と右方向ベクトルを取得し、y成分を無視
+            Vector3 cameraForward = Camera.main.transform.forward;
+            cameraForward.y = 0;
+            Vector3 cameraRight = Camera.main.transform.right;
+            cameraRight.y = 0;
+            Vector3 desiredDirection = cameraForward * input.y + cameraRight * input.x;
+
+            // 移動方向に応じてキャラクターを回転
+            float targetAngle = Mathf.Atan2(desiredDirection.x, desiredDirection.z) * Mathf.Rad2Deg;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
-            transform.Translate(moveDirection.normalized * moveSpeed * Time.deltaTime, Space.World);
-        }
-
-        if (Input.GetButtonDown("Jump") && !isJumping)
-        {
-            GetComponent<Rigidbody>().AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            isJumping = true;
+            // 移動処理
+            transform.Translate(desiredDirection.normalized * moveSpeed * Time.deltaTime, Space.World);
         }
     }
 
+    public void OnJump()
+    {
+        if (!isJumping)
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            isJumping = true;
+        }
+    }
 
     void OnCollisionEnter(Collision collision)
     {
@@ -109,76 +104,170 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-    void HandAttack()
+    // アイテムを掴む処理
+    public void OnGrab()
     {
+        // アイテムを持っていない、ターゲットアイテムが存在し、トリガーゾーン内であれば
+        if (!isHoldingItem && targetItem != null && inTriggerZone)
+        {
+            StartCoroutine(GrabItemCoroutine(targetItem));
+        }
+    }
+
+    // アイテムを離す処理
+    public void OnDrop()
+    {
+        if (isHoldingItem)
+        {
+            DropItem();
+        }
+    }
+
+    // トリガーゾーンに入った時の処理
+    void OnTriggerEnter(Collider other)
+    {
+        if ((other.CompareTag("Item") || other.CompareTag("Interactable")) && !isHoldingItem)
+        {
+            targetItem = other.transform.root.gameObject;
+            inTriggerZone = true;
+        }
+    }
+
+    // トリガーゾーンから出た時の処理
+    void OnTriggerExit(Collider other)
+    {
+        if (other.transform.root.gameObject == targetItem)
+        {
+            inTriggerZone = false;
+        }
+    }
+
+    // アイテムを掴む処理
+    IEnumerator GrabItemCoroutine(GameObject item)
+    {
+        GetComponent<Rigidbody>().isKinematic = true;
+
+        float elapsedTime = 0;
+        Vector3 initialPosition = item.transform.position;
+        Quaternion initialRotation = item.transform.rotation;
+
+        while (elapsedTime < grabSpeed)
+        {
+            item.transform.position = Vector3.Lerp(initialPosition, playerHand.position, (elapsedTime / grabSpeed));
+            item.transform.rotation = Quaternion.Slerp(initialRotation, playerHand.rotation, (elapsedTime / grabSpeed));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        item.transform.SetParent(playerHand);
+        item.transform.localPosition = Vector3.zero;
+        item.transform.localRotation = Quaternion.identity;
+        Rigidbody rb = item.GetComponent<Rigidbody>();
+        if (rb != null) rb.isKinematic = true;
+
+        Collider itemCollider = item.GetComponent<Collider>();
+        if (itemCollider != null) itemCollider.enabled = false;
+
+        SetCurrentWeapon(item);
+        GetComponent<Rigidbody>().isKinematic = false;
+
+        isHoldingItem = true; // アイテムを持っている状態に
+    }
+
+    // アイテムを離す処理
+    public void DropItem()
+    {
+        if (targetItem != null)
+        {
+            Debug.Log("drop");
+
+            targetItem.transform.SetParent(null);
+
+            Rigidbody itemRb = targetItem.GetComponent<Rigidbody>();
+            if (itemRb != null)
+            {
+                itemRb.isKinematic = false;
+                itemRb.useGravity = true;
+                itemRb.AddForce(transform.forward * 1f + transform.up * 0.5f, ForceMode.VelocityChange);
+            }
+
+            Collider itemCollider = targetItem.GetComponent<Collider>();
+            if (itemCollider != null)
+            {
+                itemCollider.enabled = true;
+            }
+
+            // アイテムを拾う際の遅延
+            canPickup = false;
+            StartCoroutine(AllowPickupAfterDelay(2f));
+
+            targetItem = null;
+            isHoldingItem = false;
+        }
+    }
+
+
+    IEnumerator AllowPickupAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        canPickup = true;
+    }
+
+
+
+    public void OnAttack()
+    {
+        if (targetItem != null)
+        {
+
+            if (targetItem.CompareTag("Interactable"))
+            {
+                Interactable();
+            }
+            else if (targetItem.CompareTag("Item"))
+            {
+                ThrowWeapon(targetItem);
+            }
+        }
+        else
+        {
+            HandAttack();
+        }
     }
 
     void Interactable()
     {
-        animator.SetTrigger("AttackTrigger");
+        //animator.SetTrigger("AttackTrigger");
+        Debug.Log("Interactable Attack");
     }
 
-    void ThrowWeapon()
+    void ThrowWeapon(GameObject weapon)
     {
-        currentWeapon.transform.SetParent(null);
-        Rigidbody rb = currentWeapon.GetComponent<Rigidbody>();
+        weapon.transform.SetParent(null);
+        Rigidbody rb = weapon.GetComponent<Rigidbody>();
         rb.isKinematic = false;
         rb.AddForce(transform.forward * throwForce, ForceMode.VelocityChange);
-        Collider weaponCollider = currentWeapon.GetComponent<Collider>();
+        Collider weaponCollider = weapon.GetComponent<Collider>();
         weaponCollider.enabled = true;
-        currentWeapon = null;
+
+        targetItem = null;
+        isHoldingItem = false;
     }
 
-    public void DropWeapon()
+    void HandAttack()
     {
-        if (currentWeapon == null) return;
-
-        currentWeapon.transform.SetParent(null);
-        Rigidbody rb = currentWeapon.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.isKinematic = false;
-        }
-
-        Collider weaponCollider = currentWeapon.GetComponent<Collider>();
-        if (weaponCollider != null)
-        {
-            weaponCollider.enabled = true;
-        }
-
-        currentWeapon.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
-        currentWeapon = null;
+        Debug.Log("Attack");
     }
 
-
+    // 現在の武器を設定する
     public void SetCurrentWeapon(GameObject weapon)
     {
-        currentWeapon = weapon;
-        weapon.transform.SetParent(handTransform);
-        weapon.transform.localPosition = Vector3.zero;
-        weapon.transform.localRotation = Quaternion.identity;
-        Rigidbody rb = weapon.GetComponent<Rigidbody>();
-        rb.isKinematic = true;
-        Collider weaponCollider = weapon.GetComponent<Collider>();
-        weaponCollider.enabled = false;
+        // 現在の武器を設定する処理を実装
     }
 
-    void FixedUpdate()
-    {
-        transform.rotation = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f);
-    }
-
+    // 現在の武器をクリアする
     public void ClearCurrentWeapon()
     {
-        if (currentWeapon != null)
-        {
-            currentWeapon.transform.SetParent(null);
-            Rigidbody rb = currentWeapon.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.isKinematic = false;
-            }
-            currentWeapon = null;
-        }
+        // 現在の武器をクリアする処理を実装
     }
 }

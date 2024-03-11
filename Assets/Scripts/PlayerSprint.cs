@@ -5,23 +5,23 @@ public class PlayerSprint : MonoBehaviour
 {
     [Header("Sprint Settings")]
     [Tooltip("プレイヤーがスプリントする速度")]
-    public float sprintSpeed = 10f; // 衝刺速度
+    public float sprintSpeed = 10f;
     [Tooltip("スプリントの最大持続時間")]
-    public float sprintTime = 2f; // 衝刺持續時間的最大值
+    public float sprintTime = 2f;
     [Tooltip("スプリント中の回転速度")]
-    public float rotationSpeed = 5f; // 回轉速度
+    public float rotationSpeed = 5f;
 
     [Header("Sliding Settings")]
     [Tooltip("スプリント後のスライディング効果の持続時間")]
-    public float slideDuration = 0.5f; // 滑行效果持續時間
+    public float slideDuration = 0.5f;
     [Tooltip("スライディングの速度乗数")]
-    public float slideSpeedMultiplier = 0.5f; // 滑行速度乘數
+    public float slideSpeedMultiplier = 0.5f;
 
     [Header("Cooldown Settings")]
     [Tooltip("スプリント時間を基準としたクールダウン時間の乗数")]
-    public float sprintCooldownMultiplier = 1f; // 冷卻時間乘數
+    public float sprintCooldownMultiplier = 1f;
 
-    private float remainingSprintTime; // 殘りのスプリント時間
+    private float remainingSprintTime;
     private float slideTimer = 0;
     private float cooldownTimer = 0;
     private bool isSprinting = false;

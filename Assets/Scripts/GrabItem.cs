@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GrabItem : MonoBehaviour
 {
@@ -11,24 +12,41 @@ public class GrabItem : MonoBehaviour
     private GameObject targetItem; // ターゲットアイテム
     private bool isHoldingItem = false; // アイテムを持っているかどうか
     public CharacterMovement characterMovement; // キャラクターの動きを制御するコンポーネント
-
     private bool inTriggerZone = false;
 
+    private PlayerController controls; // Input Actionsのコントロール
 
-    void Update()
+    void Awake()
     {
-        // Jキーが押された時の処理
-        if (Input.GetKeyDown(KeyCode.J))
+        controls = new PlayerController();
+        controls.Player.Grab.performed += ctx => OnGrab();
+        controls.Player.Drop.performed += ctx => OnDrop();
+    }
+
+    void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Disable();
+    }
+
+    void OnGrab()
+    {
+        // アイテムを持っていない、ターゲットアイテムが存在し、トリガーゾーン内であれば
+        if (!isHoldingItem && targetItem != null && inTriggerZone)
         {
-            // アイテムを持っていない、ターゲットアイテムが存在し、トリガーゾーン内であれば
-            if (!isHoldingItem && targetItem != null && inTriggerZone) 
-            {
-                StartCoroutine(GrabItemCoroutine(targetItem));
-            }
-            else if (isHoldingItem)
-            {
-                DropItem();
-            }
+            StartCoroutine(GrabItemCoroutine(targetItem));
+        }
+    }
+
+    void OnDrop()
+    {
+        if (isHoldingItem)
+        {
+            DropItem();
         }
     }
 
@@ -37,8 +55,8 @@ public class GrabItem : MonoBehaviour
     {
         if ((other.CompareTag("Item") || other.CompareTag("Interactable")) && !isHoldingItem)
         {
-            targetItem = other.transform.root.gameObject; 
-            inTriggerZone = true; 
+            targetItem = other.transform.root.gameObject;
+            inTriggerZone = true;
         }
     }
 
@@ -80,7 +98,7 @@ public class GrabItem : MonoBehaviour
         characterMovement.SetCurrentWeapon(item);
         characterMovement.GetComponent<Rigidbody>().isKinematic = false;
 
-        isHoldingItem = true;// アイテムを持っている状態に
+        isHoldingItem = true; // アイテムを持っている状態に
     }
 
     // アイテムを離す処理
@@ -88,7 +106,7 @@ public class GrabItem : MonoBehaviour
     {
         if (characterMovement != null && isHoldingItem)
         {
-            characterMovement.DropWeapon(); // アイテムを離す
+            characterMovement.ClearCurrentWeapon(); // アイテムを離す
             isHoldingItem = false; // アイテムを持っていない状態に
         }
     }

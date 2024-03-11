@@ -13,14 +13,16 @@ public class CameraManager : MonoBehaviour
 
     private GameObject[] players; // プレーヤーオブジェクトを格納する配列
     private Vector3 desiredPosition; // カメラの望ましい位置
+    private float curveTime = 0f; // 曲線的時間值
 
     void FixedUpdate()
     {
-        // 少なくとも2つのプレーヤーがいるかどうかを確認
+        // プレーヤーを取得
         players = GameObject.FindGameObjectsWithTag("Player");
-        if (players.Length < 2)
+
+        // プレーヤーが存在しない場合は処理しない
+        if (players.Length == 0)
         {
-            Debug.LogWarning("'Player' タグを持つプレーヤーが少なくとも2人必要です。");
             return;
         }
 
@@ -32,8 +34,16 @@ public class CameraManager : MonoBehaviour
         }
 
         // プレーヤー間の中心位置を計算
-        Vector3 centerPosition = (playerTransforms[0].position + playerTransforms[1].position) / 2f;
-        boundsCenter.y = Mathf.Lerp(minBoundsCenter, maxBoundsCenter, Vector3.Distance(playerTransforms[0].position, playerTransforms[1].position) / 50f);
+        Vector3 centerPosition = players[0].transform.position;
+        if (players.Length > 1)
+        {
+            centerPosition = (playerTransforms[0].position + playerTransforms[1].position) / 2f;
+            boundsCenter.y = Mathf.Lerp(minBoundsCenter, maxBoundsCenter, Vector3.Distance(playerTransforms[0].position, playerTransforms[1].position) / 50f);
+        }
+        else
+        {
+            boundsCenter.y = minBoundsCenter;
+        }
 
         // カメラの望ましい位置を計算
         desiredPosition = centerPosition + offset;
@@ -44,8 +54,11 @@ public class CameraManager : MonoBehaviour
         desiredPosition.x = Mathf.Clamp(desiredPosition.x, minBounds.x, maxBounds.x);
         desiredPosition.y = Mathf.Clamp(desiredPosition.y, minBounds.y, maxBounds.y);
 
+        // 曲線の時間を更新
+        curveTime += Time.fixedDeltaTime * followSpeed;
+
         // カメラを望ましい位置にスムーズに移動
-        float t = followCurve.Evaluate(Time.deltaTime * followSpeed); // 追跡曲線の値を計算
+        float t = followCurve.Evaluate(curveTime); // 追跡曲線の値を計算
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * t); // speed乘以t
         transform.position = smoothedPosition;
     }
