@@ -4,6 +4,7 @@ using System.Collections;
 
 public class CharacterMovement : MonoBehaviour
 {
+    /*
     [Tooltip("キャラクターの移動速度")]
     public float moveSpeed = 5.0f; // キャラクターの移動速度
     [Tooltip("曲がる時の滑らかさ")]
@@ -107,10 +108,13 @@ public class CharacterMovement : MonoBehaviour
     // アイテムを掴む処理
     public void OnGrab()
     {
-        // アイテムを持っていない、ターゲットアイテムが存在し、トリガーゾーン内であれば
-        if (!isHoldingItem && targetItem != null && inTriggerZone)
+        if (!isHoldingItem && targetItem != null && inTriggerZone && canPickup)
         {
             StartCoroutine(GrabItemCoroutine(targetItem));
+        }
+        else
+        {
+            Debug.Log($"Grab failed - IsHoldingItem: {isHoldingItem}, TargetItem: {targetItem != null}, InTriggerZone: {inTriggerZone}, CanPickup: {canPickup}");
         }
     }
 
@@ -119,9 +123,41 @@ public class CharacterMovement : MonoBehaviour
     {
         if (isHoldingItem)
         {
-            DropItem();
+            StartCoroutine(DropItemCoroutine());
         }
     }
+
+    IEnumerator DropItemCoroutine()
+    {
+        // オブジェクトの親を解除し、物理的な影響を与えます
+        targetItem.transform.SetParent(null);
+        Rigidbody itemRb = targetItem.GetComponent<Rigidbody>();
+        if (itemRb != null)
+        {
+            itemRb.isKinematic = false;
+            itemRb.useGravity = true;
+            itemRb.AddForce(transform.forward * 1f + transform.up * 0.5f, ForceMode.VelocityChange);
+        }
+
+        Collider itemCollider = targetItem.GetComponent<Collider>();
+        if (itemCollider != null)
+        {
+            itemCollider.enabled = true;
+        }
+
+        // プレイヤーとアイテムのPhysicsを一時的に無効にします
+        Collider playerCollider = GetComponent<Collider>();
+        Physics.IgnoreCollision(itemCollider, playerCollider, true);
+
+        Physics.IgnoreCollision(itemCollider, playerCollider, false);
+        yield return new WaitForSeconds(0.5f);
+        canPickup = false;
+        StartCoroutine(AllowPickupAfterDelay(2f));
+
+        targetItem = null;
+        isHoldingItem = false;
+    }
+
 
     // トリガーゾーンに入った時の処理
     void OnTriggerEnter(Collider other)
@@ -138,8 +174,7 @@ public class CharacterMovement : MonoBehaviour
     {
         if (other.transform.root.gameObject == targetItem)
         {
-            inTriggerZone = false;
-        }
+            inTriggerZone = false;        }
     }
 
     // アイテムを掴む処理
@@ -172,38 +207,6 @@ public class CharacterMovement : MonoBehaviour
         GetComponent<Rigidbody>().isKinematic = false;
 
         isHoldingItem = true; // アイテムを持っている状態に
-    }
-
-    // アイテムを離す処理
-    public void DropItem()
-    {
-        if (targetItem != null)
-        {
-            Debug.Log("drop");
-
-            targetItem.transform.SetParent(null);
-
-            Rigidbody itemRb = targetItem.GetComponent<Rigidbody>();
-            if (itemRb != null)
-            {
-                itemRb.isKinematic = false;
-                itemRb.useGravity = true;
-                itemRb.AddForce(transform.forward * 1f + transform.up * 0.5f, ForceMode.VelocityChange);
-            }
-
-            Collider itemCollider = targetItem.GetComponent<Collider>();
-            if (itemCollider != null)
-            {
-                itemCollider.enabled = true;
-            }
-
-            // アイテムを拾う際の遅延
-            canPickup = false;
-            StartCoroutine(AllowPickupAfterDelay(2f));
-
-            targetItem = null;
-            isHoldingItem = false;
-        }
     }
 
 
@@ -270,4 +273,5 @@ public class CharacterMovement : MonoBehaviour
     {
         // 現在の武器をクリアする処理を実装
     }
+    */
 }
