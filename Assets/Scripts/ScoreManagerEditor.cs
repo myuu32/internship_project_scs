@@ -1,5 +1,6 @@
-using UnityEditor;
+#if UNITY_EDITOR
 using UnityEngine;
+using UnityEditor;
 
 [CustomEditor(typeof(ScoreManager))]
 public class ScoreManagerEditor : Editor
@@ -26,3 +27,4 @@ public class ScoreManagerEditor : Editor
         }
     }
 }
+#endif

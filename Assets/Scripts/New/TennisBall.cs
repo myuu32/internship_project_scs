@@ -8,7 +8,7 @@ public class TennisBall : MonoBehaviour
     [SerializeField] private float restitution = 0.8f; // 反彈係數
     [SerializeField] private float collisionVelocityIncrease = 1.5f; // 碰撞後速度增加量
     [SerializeField] private float maxHeight = 100f; // 最大高度
-    [SerializeField] private float heightOffset = 0.5f; // 高度偏移量
+    //[SerializeField] private float heightOffset = 0.5f; // 高度偏移量
 
     private Rigidbody rb;
     private bool isFalling = false;

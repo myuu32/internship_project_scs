@@ -8,6 +8,12 @@ TagManager:
   - Enemy
   - Item
   - Interactable
+  - A1
+  - B1
+  - LaunchPoint
+  - TennisBall
+  - PointA
+  - PointB
   layers:
   - Default
   - TransparentFX

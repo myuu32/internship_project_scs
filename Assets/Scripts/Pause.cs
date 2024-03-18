@@ -60,4 +60,16 @@ public class PauseManager : MonoBehaviour
             pauseMenu.SetActive(false);
         }
     }
+
+    public void Disconnect()
+    {
+        Time.timeScale = 0f;
+        Debug.Log("Game paused.");
+    }
+
+    public void Reconnect()
+    {
+        Time.timeScale = 1f;
+        Debug.Log("Game resumed.");
+    }
 }
