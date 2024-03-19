@@ -13,6 +13,15 @@ public class PlayerInputController : MonoBehaviour
     [SerializeField] private float sprintCooldown = 2f; // 衝刺冷卻時間
     [SerializeField] private float slideSpeedMultiplier = 0.5f; // 滑行速度乘數
 
+    [SerializeField] public float aimspeed = 3f;
+    [SerializeField] public float hitForce = 40f;
+
+    private Transform aimTarget;
+    private bool hittingLeft;
+    private bool hittingRight;
+    private Animator animator;
+    private GameObject ball;
+
     private CharacterController controller;
     private Vector2 moveInput;
     private float turnSmoothVelocity;
@@ -24,6 +33,7 @@ public class PlayerInputController : MonoBehaviour
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -33,28 +43,29 @@ public class PlayerInputController : MonoBehaviour
 
     public void OnSprint(InputAction.CallbackContext context)
     {
-        if (context.started && !isSprinting && cooldownTimer <= 0)
-        {
-            StartSprint();
-        }
+        if (context.started && !isSprinting && cooldownTimer <= 0) StartSprint();
     }
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if (context.started)
-        {
-            Attack();
-        }
+        if (context.started) Attack();
     }
 
-    void Update()
+    public void OnHitLeft(InputAction.CallbackContext context)
+    {
+        hittingLeft = context.ReadValueAsButton();
+    }
+
+    public void OnHitRight(InputAction.CallbackContext context)
+    {
+        hittingRight = context.ReadValueAsButton();
+    }
+
+    private void Update()
     {
         MovePlayer();
 
-        if (isSprinting)
-        {
-            UpdateSprint();
-        }
+        if (isSprinting) UpdateSprint();
         else if (cooldownTimer > 0)
         {
             cooldownTimer -= Time.deltaTime;
@@ -64,9 +75,67 @@ public class PlayerInputController : MonoBehaviour
         {
             UpdateSlide();
         }
+
+        StartCoroutine(FindAimTarget());
+
+        float h = moveInput.x;
+        float v = moveInput.y;
+
+        if (hittingLeft)
+        {
+            aimTarget.Translate(Vector3.left * aimspeed * 2 * Time.deltaTime); 
+        }
+
+        if (hittingRight)
+        {
+            aimTarget.Translate(Vector3.right * aimspeed * 2 * Time.deltaTime);
+        }
+
+        if ((h != 0 || v != 0) && !hittingLeft && !hittingRight)
+        {
+            transform.Translate(new Vector3(h, 0, v) * aimspeed * Time.deltaTime);
+        }
+
+        StartCoroutine(FindBallPos());
     }
 
-    void MovePlayer()
+    private System.Collections.IEnumerator FindAimTarget()
+    {
+        while (true)
+        {
+            int playerIndex = GetComponent<PlayerInput>().playerIndex;
+
+            if (playerIndex == 0)
+            {
+                aimTarget = GameObject.FindGameObjectWithTag("AimTargetA").transform;
+            }
+            else if (playerIndex == 1)
+            {
+                aimTarget = GameObject.FindGameObjectWithTag("AimTargetB").transform;
+            }
+
+            if (aimTarget != null)
+            {
+                yield break;
+            }
+
+            yield return null;
+        }
+    }
+
+    System.Collections.IEnumerator FindBallPos()
+    {
+        while (true)
+        {
+            if (ball == null)
+            {
+                ball = GameObject.FindGameObjectWithTag("TennisBall");
+            }
+            yield return null;
+        }
+    }
+
+    private void MovePlayer()
     {
         Vector3 moveDirection = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
 
@@ -88,7 +157,7 @@ public class PlayerInputController : MonoBehaviour
         ApplyGravity();
     }
 
-    void ApplyGravity()
+    private void ApplyGravity()
     {
         if (!controller.isGrounded)
         {
@@ -96,7 +165,7 @@ public class PlayerInputController : MonoBehaviour
         }
     }
 
-    void StartSprint()
+    private void StartSprint()
     {
         isSprinting = true;
         sprintTimer = sprintTime;
@@ -104,7 +173,7 @@ public class PlayerInputController : MonoBehaviour
         StartSlide(); // Start sliding when sprinting starts
     }
 
-    void UpdateSprint()
+    private void UpdateSprint()
     {
         sprintTimer -= Time.deltaTime;
         if (sprintTimer <= 0)
@@ -117,26 +186,40 @@ public class PlayerInputController : MonoBehaviour
         }
     }
 
-    void EndSprint()
+    private void EndSprint()
     {
         isSprinting = false;
         // End sliding when sprinting ends
         isSliding = false;
     }
 
-    void Attack()
+    private void Attack()
     {
         Debug.Log("Attack with force: " + attackForce);
     }
 
-    void StartSlide()
+    private void StartSlide()
     {
         isSliding = true;
     }
 
-    void UpdateSlide()
+    private void UpdateSlide()
     {
         // Move the player forward with reduced speed while sliding
         controller.Move(transform.forward * sprintSpeed * slideSpeedMultiplier * Time.deltaTime);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("TennisBall"))
+        {
+            Debug.Log("Rerve");
+            Vector3 dir = aimTarget.position - transform.position;
+            other.GetComponent<Rigidbody>().velocity = dir.normalized * hitForce + new Vector3(0, 45, 0);
+
+            Vector3 ballDir = ball.transform.position - transform.position;
+            if (ballDir.x >= 0) animator.Play("Forehand");
+            else animator.Play("Backhand");
+        }
     }
 }

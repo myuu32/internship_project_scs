@@ -7,13 +7,12 @@ TagManager:
   - Ground
   - Enemy
   - Item
-  - Interactable
-  - A1
-  - B1
-  - LaunchPoint
   - TennisBall
   - PointA
   - PointB
+  - AimTargetA
+  - AimTargetB
+  - Wall
   layers:
   - Default
   - TransparentFX

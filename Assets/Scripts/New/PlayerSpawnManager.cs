@@ -17,5 +17,10 @@ public class PlayerSpawnManager : MonoBehaviour
 
         // Set the start spawn position of the player using the location at the associated element into the array.
         playerInput.gameObject.GetComponent<PlayerDetails>().startPos = spawnLocations[playerInput.playerIndex].position;
+
+        if (playerInput.playerIndex == 1)
+        {
+            playerInput.gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
+        }
     }
 }

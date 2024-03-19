@@ -17,10 +17,8 @@ public class CameraManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        // プレーヤーを取得
         players = GameObject.FindGameObjectsWithTag("Player");
 
-        // プレーヤーが存在しない場合は処理しない
         if (players.Length == 0)
         {
             return;
