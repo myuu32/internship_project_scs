@@ -14,10 +14,12 @@ public class CameraManager : MonoBehaviour
     private GameObject[] players; // プレーヤーオブジェクトを格納する配列
     private Vector3 desiredPosition; // カメラの望ましい位置
     private float curveTime = 0f; // 曲線的時間值
+    private GameObject bot;
 
     void FixedUpdate()
     {
         players = GameObject.FindGameObjectsWithTag("Player");
+        bot = GameObject.FindWithTag("Bot");
 
         if (players.Length == 0)
         {
@@ -31,6 +33,8 @@ public class CameraManager : MonoBehaviour
             playerTransforms[i] = players[i].transform;
         }
 
+
+
         // プレーヤー間の中心位置を計算
         Vector3 centerPosition = players[0].transform.position;
         if (players.Length > 1)
@@ -41,6 +45,12 @@ public class CameraManager : MonoBehaviour
         else
         {
             boundsCenter.y = minBoundsCenter;
+        }
+
+        if (players.Length == 1 && bot != null)
+        {
+            centerPosition = (players[0].transform.position + bot.transform.position) / 2f;
+            boundsCenter.y = Mathf.Lerp(minBoundsCenter, maxBoundsCenter, Vector3.Distance(players[0].transform.position, bot.transform.position) / 50f);
         }
 
         // カメラの望ましい位置を計算

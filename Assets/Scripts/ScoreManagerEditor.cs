@@ -7,7 +7,7 @@ public class ScoreManagerEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        DrawDefaultInspector(); // 繪製默認的Inspector
+        DrawDefaultInspector();
 
         ScoreManager scoreManager = (ScoreManager)target;
 

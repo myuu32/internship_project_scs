@@ -3,28 +3,27 @@ using UnityEngine;
 public class TennisBallLauncher : MonoBehaviour
 {
 
-    public GameObject ballPrefab; // 球的预制体
-    public GameObject[] launchPoints; // 发球点数组
-    public Vector3[] launchDirections; // 每个发球点的发射方向数组
-    public float[] launchAngles; // 每个发球点的发射角度数组
-    public float[] launchSpeeds; // 每个发球点的发射速度数组
-    public float gravityScale = 1f; // 重力缩放系数
-    public float bounciness = 0.6f; // 反弹系数
-    public float minAngle = 30f; // 最小发射角度
-    public float maxAngle = 60f; // 最大发射角度
-    public float minSpeed = 10f; // 最小发射速度
-    public float maxSpeed = 20f; // 最大发射速度
-    private bool[] playerNearLaunchPoint; // 玩家是否接近每个发球点的标志数组
+    public GameObject ballPrefab;
+    public GameObject[] launchPoints;
+    public Vector3[] launchDirections;
+    public float[] launchAngles;
+    public float[] launchSpeeds;
+    public float gravityScale = 1f;
+    public float bounciness = 0.6f;
+    public float minAngle = 30f;
+    public float maxAngle = 60f;
+    public float minSpeed = 10f;
+    public float maxSpeed = 20f;
+    private bool[] playerNearLaunchPoint;
 
     void Start()
     {
         Physics.gravity = new Vector3(0, -9.81f * gravityScale, 0);
-        playerNearLaunchPoint = new bool[launchPoints.Length]; // 初始化标志数组
+        playerNearLaunchPoint = new bool[launchPoints.Length];
     }
 
     void Update()
     {
-        // 按下空格键从接近的发球点发球
         if (Input.GetKeyDown(KeyCode.Space))
         {
             for (int i = 0; i < launchPoints.Length; i++)
@@ -48,7 +47,7 @@ public class TennisBallLauncher : MonoBehaviour
         if (index == -1)
         {
             Debug.LogError("Launch point index not found.");
-            return; // 如果找不到发球点索引，则返回
+            return;
         }
 
         GameObject ballInstance = Instantiate(ballPrefab, launchPoint.transform.position, Quaternion.identity);
@@ -73,15 +72,13 @@ public class TennisBallLauncher : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // 循环遍历launchPoints数组
             for (int i = 0; i < launchPoints.Length; i++)
             {
-                // 检查玩家是否触发了任一launchPoints的子Collider
                 if (other.gameObject.transform.IsChildOf(launchPoints[i].transform))
                 {
                     playerNearLaunchPoint[i] = true;
                     Debug.Log($"Player entered near launch point {i}.");
-                    break; // 找到匹配项后跳出循环
+                    break;
                 }
             }
         }
@@ -97,7 +94,7 @@ public class TennisBallLauncher : MonoBehaviour
                 {
                     playerNearLaunchPoint[i] = false;
                     Debug.Log($"Player exited from near launch point {i}.");
-                    break; // 找到匹配项后跳出循环
+                    break;
                 }
             }
         }
@@ -109,7 +106,6 @@ public class TennisBallLauncher : MonoBehaviour
         if (index != -1)
         {
             Debug.Log($"Enabling launch for point {index}.");
-            // 假设 playerNearLaunchPoint 是布尔类型数组，用来追踪每个发球点的状态
             playerNearLaunchPoint[index] = true;
         }
     }

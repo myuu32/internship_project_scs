@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class LaunchPointDetector : MonoBehaviour
 {
-    public TennisBallLauncher launcherScript; // Reference to the main launcher script
+    public TennisBallLauncher launcherScript;
 
     void OnTriggerEnter(Collider other)
     {

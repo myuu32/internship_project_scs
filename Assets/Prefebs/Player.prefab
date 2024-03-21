@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 1423658546072400254}
   - component: {fileID: -3306334899489596632}
   - component: {fileID: 7658401351870909247}
+  - component: {fileID: 363615362644036237}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -34,7 +35,7 @@ Transform:
   m_GameObject: {fileID: 4749833204828891801}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 39, y: 4.970435, z: -10.3}
+  m_LocalPosition: {x: 186.3, y: 4.970435, z: 52.6}
   m_LocalScale: {x: 4.1113, y: 7.9196954, z: 4.1113}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -182,7 +183,6 @@ MonoBehaviour:
   sprintCooldown: 1
   slideSpeedMultiplier: 2
   aimspeed: 20
-  hitForce: 50
 --- !u!114 &1423658546072400254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,8 +275,8 @@ MonoBehaviour:
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: BallRebound, Assembly-CSharp
+      - m_Target: {fileID: 5676740447803738969}
+        m_TargetAssemblyTypeName: PlayerInputController, Assembly-CSharp
         m_MethodName: OnAttack
         m_Mode: 0
         m_Arguments:
@@ -377,6 +377,24 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &363615362644036237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4749833204828891801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35f4756ef76364b528d8a7e681bbd562, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topSpin:
+    upForce: 50
+    hitForce: 50
+  flat:
+    upForce: 50
+    hitForce: 50
 --- !u!1 &8648898370821944603
 GameObject:
   m_ObjectHideFlags: 0
@@ -1225,7 +1243,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 6024
+  m_VersionIndex: 6039
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1323,10 +1341,10 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}

@@ -3,10 +3,10 @@ using UnityEngine.InputSystem;
 
 public class BallRebound : MonoBehaviour
 {
-    [SerializeField] private float attackForce = 10f; // 攻击力道
-    [SerializeField] private float attackAngle = 45f; // 攻击角度
+    [SerializeField] private float attackForce = 10f;
+    [SerializeField] private float attackAngle = 45f;
 
-    private bool isAttacking = false; // 是否正在攻击
+    private bool isAttacking = false;
 
     public void OnAttack(InputAction.CallbackContext context)
     {

@@ -4,17 +4,15 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerInputController : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 5f; // 移動速度
-    [SerializeField] private float turnSmoothTime = 0.1f; // 轉向平滑時間
-    [SerializeField] private float attackForce = 10f; // 攻擊力道
-    [SerializeField] private float gravity = 9.81f; // 重力
-    [SerializeField] private float sprintSpeed = 10f; // 衝刺速度
-    [SerializeField] private float sprintTime = 2f; // 衝刺時間
-    [SerializeField] private float sprintCooldown = 2f; // 衝刺冷卻時間
-    [SerializeField] private float slideSpeedMultiplier = 0.5f; // 滑行速度乘數
-
-    [SerializeField] public float aimspeed = 3f;
-    [SerializeField] public float hitForce = 40f;
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float turnSmoothTime = 0.1f;
+    [SerializeField] private float attackForce = 10f;
+    [SerializeField] private float gravity = 9.81f;
+    [SerializeField] private float sprintSpeed = 10f;
+    [SerializeField] private float sprintTime = 2f;
+    [SerializeField] private float sprintCooldown = 2f;
+    [SerializeField] private float slideSpeedMultiplier = 0.5f;
+    [SerializeField] private float aimspeed = 20f;
 
     private Transform aimTarget;
     private bool hittingLeft;
@@ -30,10 +28,16 @@ public class PlayerInputController : MonoBehaviour
     private float sprintTimer = 0f;
     private float cooldownTimer = 0f;
 
+    private ServeManager serveManager;
+    private Serve currentServe;
+    private bool hitting = false;
+
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+        serveManager = GetComponent<ServeManager>();
+        currentServe = serveManager.flat;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -48,7 +52,12 @@ public class PlayerInputController : MonoBehaviour
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if (context.started) Attack();
+        if (context.started)
+        {
+            hitting = true;
+            currentServe = serveManager.flat;
+        }
+        else if (context.canceled) hitting = false;
     }
 
     public void OnHitLeft(InputAction.CallbackContext context)
@@ -71,11 +80,8 @@ public class PlayerInputController : MonoBehaviour
             cooldownTimer -= Time.deltaTime;
         }
 
-        if (isSliding)
-        {
-            UpdateSlide();
-        }
-
+        if (isSliding) UpdateSlide();
+        
         StartCoroutine(FindAimTarget());
 
         float h = moveInput.x;
@@ -97,6 +103,8 @@ public class PlayerInputController : MonoBehaviour
         }
 
         StartCoroutine(FindBallPos());
+
+
     }
 
     private System.Collections.IEnumerator FindAimTarget()
@@ -170,7 +178,7 @@ public class PlayerInputController : MonoBehaviour
         isSprinting = true;
         sprintTimer = sprintTime;
         cooldownTimer = sprintCooldown;
-        StartSlide(); // Start sliding when sprinting starts
+        StartSlide();
     }
 
     private void UpdateSprint()
@@ -189,7 +197,6 @@ public class PlayerInputController : MonoBehaviour
     private void EndSprint()
     {
         isSprinting = false;
-        // End sliding when sprinting ends
         isSliding = false;
     }
 
@@ -205,21 +212,21 @@ public class PlayerInputController : MonoBehaviour
 
     private void UpdateSlide()
     {
-        // Move the player forward with reduced speed while sliding
         controller.Move(transform.forward * sprintSpeed * slideSpeedMultiplier * Time.deltaTime);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("TennisBall"))
+        if (other.CompareTag("TennisBall") && hitting)
         {
-            Debug.Log("Rerve");
             Vector3 dir = aimTarget.position - transform.position;
-            other.GetComponent<Rigidbody>().velocity = dir.normalized * hitForce + new Vector3(0, 45, 0);
+            other.GetComponent<Rigidbody>().velocity = dir.normalized * currentServe.hitForce + new Vector3(0, currentServe.upForce, 0);
 
             Vector3 ballDir = ball.transform.position - transform.position;
             if (ballDir.x >= 0) animator.Play("Forehand");
             else animator.Play("Backhand");
+
+            hitting = false;
         }
     }
 }
