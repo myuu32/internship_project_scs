@@ -9,7 +9,6 @@ public class PlayerSpawnManager : MonoBehaviour
 
     private bool[] locationOccupied;
     private PlayerInputManager playerInputManager;
-
     private void Awake()
     {
         playerInputManager = GetComponent<PlayerInputManager>();
@@ -24,8 +23,7 @@ public class PlayerSpawnManager : MonoBehaviour
     void OnPlayerJoined(PlayerInput playerInput)
     {
         Debug.Log("PlayerInput ID: " + playerInput.playerIndex);
-        StartCoroutine(AssignSpawnLocation(playerInput));
-    }
+        StartCoroutine(AssignSpawnLocation(playerInput));    }
 
     private IEnumerator AssignSpawnLocation(PlayerInput playerInput)
     {

@@ -848,7 +848,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 6024
+  m_VersionIndex: 6027
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -972,6 +972,7 @@ GameObject:
   - component: {fileID: 2163532914129761320}
   - component: {fileID: 1724760979674717591}
   - component: {fileID: 2743183624153607846}
+  - component: {fileID: 539773289993733087}
   m_Layer: 6
   m_Name: Bot
   m_TagString: Bot
@@ -1342,3 +1343,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aeb8680adf564e518bbb8f53a665521, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &539773289993733087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5513932076195764690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35f4756ef76364b528d8a7e681bbd562, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topSpin:
+    upForce: 50
+    hitForce: 50
+  flat:
+    upForce: 50
+    hitForce: 50

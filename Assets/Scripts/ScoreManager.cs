@@ -30,16 +30,10 @@ public class ScoreManager : MonoBehaviour
         onScoreChange.Invoke();
     }
 
-    private void UpdateGameStatusUI()
+    public void UpdateGameStatusUI()
     {
-        if (gameStatus)
-        {
-            gameStatusUI.SetActive(true);
-        }
-        else
-        {
-            gameStatusUI.SetActive(false);
-        }
+        bool botExists = GameObject.FindGameObjectWithTag("Bot") != null;
+        gameStatusUI.SetActive(!botExists);
     }
 
     public void AddScorePlayer1(int score)

@@ -12,8 +12,11 @@ EditorBuildSettings:
     path: Assets/Scenes/Cutscene.unity
     guid: ec666e76c6f4449ddad75c576530400e
   - enabled: 1
-    path: Assets/Scenes/TennisBall.unity
+    path: Assets/Scenes/TennisBall_Multiplayer.unity
     guid: 99291f6ec89ed436d86cb553818fba07
+  - enabled: 1
+    path: Assets/Scenes/TennisBall_Single.unity
+    guid: 787798ea48649432f9ff3ebabf670b5d
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 59852552463444dc0ace0e0592362260,
       type: 2}

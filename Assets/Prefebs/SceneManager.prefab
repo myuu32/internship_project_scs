@@ -49,5 +49,7 @@ MonoBehaviour:
     sceneName: StartMenu
   - buttonName: Cutscene
     sceneName: Cutscene
-  - buttonName: Stage1
-    sceneName: Stage1
+  - buttonName: TennisBall_Multiplayer
+    sceneName: TennisBall_Multiplayer
+  - buttonName: TennisBall_Single
+    sceneName: TennisBall_Single
