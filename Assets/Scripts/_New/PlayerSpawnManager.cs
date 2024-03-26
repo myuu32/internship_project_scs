@@ -48,7 +48,7 @@ public class PlayerSpawnManager : MonoBehaviour
                 playerInput.gameObject.transform.position = spawnPosition;
                 if (i == 1)
                 {
-                    playerInput.gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
+                    playerInput.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
                 }
 
                 playerInput.gameObject.GetComponent<PlayerDetails>().playerID = i + 1;
