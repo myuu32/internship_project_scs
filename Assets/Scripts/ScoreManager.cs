@@ -21,6 +21,7 @@ public class ScoreManager : MonoBehaviour
     {
         UpdateScoreDisplay();
         UpdateGameStatusUI();
+        Time.timeScale = 1f;
     }
 
     private void UpdateScoreDisplay()
@@ -82,5 +83,10 @@ public class ScoreManager : MonoBehaviour
             gameStatus = false;
         }
         UpdateGameStatusUI();
+    }
+
+    public void GameTimeStop()
+    {
+        Time.timeScale = 0f;
     }
 }
