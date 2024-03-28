@@ -123,28 +123,18 @@ public class PlayerController : MonoBehaviour
     private void MovePlayer()
     {
         Vector3 moveInputDirection = new Vector3(moveInput.x, 0, moveInput.y);
-        Quaternion cameraRotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
-        Vector3 moveDirection = cameraRotation * moveInputDirection;
 
         int playerIndex = GetComponent<PlayerInput>().playerIndex;
 
-        if (moveDirection.magnitude >= 0.1f)
+        float currentMoveSpeed = moveSpeeds[playerIndex];
+
+        if (playerIndex == 1 && moveInputDirection.magnitude >= 0.1f)
         {
-            float targetAngle = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg;
-
-            if (playerIndex == 1)
-            {
-                targetAngle += 180f;
-            }
-
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTimes[playerIndex]);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
-            float currentMoveSpeed = moveSpeeds[playerIndex];
-            Vector3 moveVector = Quaternion.AngleAxis(targetAngle, Vector3.up) * Vector3.forward * currentMoveSpeed * Time.deltaTime;
-
-            CollisionFlags flags = controller.Move(moveVector);
+            moveInputDirection *= -1f;
         }
+
+        Vector3 moveVector = moveInputDirection * currentMoveSpeed * Time.deltaTime;
+        CollisionFlags flags = controller.Move(moveVector);
 
         ApplyGravity();
     }
