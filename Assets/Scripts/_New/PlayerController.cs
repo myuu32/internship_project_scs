@@ -1,26 +1,31 @@
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
-    public float[] moveSpeeds; // 不同玩家ID的移動速度
-    public float[] turnSmoothTimes; // 不同玩家ID的轉彎平滑時間
-    public float[] attackForces; // 不同玩家ID的攻擊力量
-    public float[] sprintSpeeds; // 不同玩家ID的衝刺速度
-    public float[] sprintTimes; // 不同玩家ID的衝刺時間
-    public float[] sprintCooldowns; // 不同玩家ID的衝刺冷卻時間
-    public float[] slideSpeedMultipliers; // 不同玩家ID的滑行速度乘數
-    public float[] aimSpeeds; // 不同玩家ID的瞄準速度
+    public float[] moveSpeeds;
+    public float[] turnSmoothTimes;
+    public float[] attackForces;
+    public float[] sprintSpeeds;
+    public float[] sprintTimes;
+    public float[] sprintCooldowns;
+    public float[] slideSpeedMultipliers;
+    public float[] aimSpeeds;
+
+    public GameObject[] playerModels;
+    public Animator[] animator;
+    public float modelScale = 1.0f;
+    public Vector3 modelPosition = Vector3.zero;
+
 
     [SerializeField] private float gravity = 9.81f;
-
 
     private CharacterController controller;
     private Transform aimTarget;
     private bool hittingLeft;
     private bool hittingRight;
-    private Animator animator;
     private GameObject ball;
 
     private Vector2 moveInput;
@@ -37,9 +42,37 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
-        animator = GetComponent<Animator>();
         serveManager = GetComponent<ServeManager>();
         currentServe = serveManager.flat;
+
+        animator = new Animator[playerModels.Length];
+        for (int i = 0; i < playerModels.Length; i++)
+        {
+            animator[i] = playerModels[i].GetComponent<Animator>();
+        }
+    }
+
+    private void Start()
+    {
+        int playerIndex = GetComponent<PlayerInput>().playerIndex;
+
+        if (playerIndex >= 0 && playerIndex < playerModels.Length)
+        {
+            GameObject selectedModel = playerModels[playerIndex];
+
+            GameObject instantiatedModel = Instantiate(selectedModel, transform.position, transform.rotation, transform);
+
+            instantiatedModel.transform.localPosition = modelPosition;
+            instantiatedModel.transform.localScale = new Vector3(modelScale, modelScale, modelScale);
+
+            instantiatedModel.transform.localRotation = Quaternion.identity;
+
+            animator[playerIndex] = instantiatedModel.GetComponent<Animator>();
+        }
+        else
+        {
+            Debug.LogError("Player index out of range for player models array!");
+        }
     }
 
     private void Update()
@@ -128,7 +161,11 @@ public class PlayerController : MonoBehaviour
 
         float currentMoveSpeed = moveSpeeds[playerIndex];
 
-        if (playerIndex == 1 && moveInputDirection.magnitude >= 0.1f)
+        bool isMoving = moveInputDirection.magnitude >= 0.1f;
+
+        animator[playerIndex].SetBool("onRun", isMoving);
+
+        if (playerIndex == 1 && isMoving)
         {
             moveInputDirection *= -1f;
         }
@@ -138,6 +175,8 @@ public class PlayerController : MonoBehaviour
 
         ApplyGravity();
     }
+
+
 
 
     private void ApplyGravity()
@@ -193,11 +232,21 @@ public class PlayerController : MonoBehaviour
             other.GetComponent<Rigidbody>().velocity = dir.normalized * currentServe.hitForce + new Vector3(0, currentServe.upForce, 0);
 
             Vector3 ballDir = ball.transform.position - transform.position;
-            if (ballDir.x >= 0) animator.Play("Forehand");
-            else animator.Play("Backhand");
+
+            int playerIndex = GetComponent<PlayerInput>().playerIndex;
+
+            if (ballDir.x >= 0)
+            {
+                animator[playerIndex].Play("Forehand");
+            }
+            else
+            {
+                animator[playerIndex].Play("Forehand");
+            }
 
             hitting = false;
         }
+
     }
 
     private System.Collections.IEnumerator FindAimTarget()

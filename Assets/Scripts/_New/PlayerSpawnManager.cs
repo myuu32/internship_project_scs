@@ -9,6 +9,7 @@ public class PlayerSpawnManager : MonoBehaviour
 
     private bool[] locationOccupied;
     private PlayerInputManager playerInputManager;
+
     private void Awake()
     {
         playerInputManager = GetComponent<PlayerInputManager>();
@@ -23,7 +24,8 @@ public class PlayerSpawnManager : MonoBehaviour
     void OnPlayerJoined(PlayerInput playerInput)
     {
         Debug.Log("PlayerInput ID: " + playerInput.playerIndex);
-        StartCoroutine(AssignSpawnLocation(playerInput));    }
+        StartCoroutine(AssignSpawnLocation(playerInput));
+    }
 
     private IEnumerator AssignSpawnLocation(PlayerInput playerInput)
     {
@@ -32,36 +34,44 @@ public class PlayerSpawnManager : MonoBehaviour
         Collider groundCollider = ground.GetComponent<Collider>();
         float groundHeight = groundCollider.bounds.max.y;
 
-        for (int i = 0; i < spawnLocations.Length; i++)
+        int spawnIndex = FindAvailableSpawnIndex();
+        if (spawnIndex != -1)
         {
-            if (!locationOccupied[i])
+            Vector3 spawnPosition = spawnLocations[spawnIndex].position;
+
+            if (spawnPosition.y < groundHeight)
             {
-                Vector3 spawnPosition = spawnLocations[i].position;
-
-                if (spawnPosition.y < groundHeight)
-                {
-                    spawnPosition.y = groundHeight + 0.5f;
-                }
-
-                Debug.Log($"Assigning Player {playerInput.playerIndex} to Location {i}");
-
-                playerInput.gameObject.transform.position = spawnPosition;
-                if (i == 1)
-                {
-                    playerInput.gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
-                }
-
-                playerInput.gameObject.GetComponent<PlayerDetails>().playerID = i + 1;
-                playerInput.gameObject.GetComponent<PlayerDetails>().startPos = spawnPosition;
-
-                locationOccupied[i] = true;
-                break;
+                spawnPosition.y = groundHeight + 0.5f;
             }
-        }
 
-        if (!locationOccupied[playerInput.playerIndex])
+            Debug.Log($"Assigning Player {playerInput.playerIndex} to Location {spawnIndex}");
+
+            playerInput.gameObject.transform.position = spawnPosition;
+            if (spawnIndex == 1)
+            {
+                playerInput.gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
+            }
+
+            playerInput.gameObject.GetComponent<PlayerDetails>().playerID = spawnIndex + 1;
+            playerInput.gameObject.GetComponent<PlayerDetails>().startPos = spawnPosition;
+
+            locationOccupied[spawnIndex] = true;
+        }
+        else
         {
             Debug.LogWarning("Unable to find a safe spawn location. Consider alternative strategies.");
         }
+    }
+
+    private int FindAvailableSpawnIndex()
+    {
+        for (int i = 0; i < locationOccupied.Length; i++)
+        {
+            if (!locationOccupied[i])
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 }
