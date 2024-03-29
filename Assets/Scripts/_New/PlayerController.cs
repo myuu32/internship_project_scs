@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
 
     public GameObject[] playerModels;
     public Animator[] animator;
-    public float modelScale = 1.0f;
+    public float[] modelScales = { 1.0f, 1.0f, 1.0f };
     public Vector3 modelPosition = Vector3.zero;
 
 
@@ -63,8 +63,7 @@ public class PlayerController : MonoBehaviour
             GameObject instantiatedModel = Instantiate(selectedModel, transform.position, transform.rotation, transform);
 
             instantiatedModel.transform.localPosition = modelPosition;
-            instantiatedModel.transform.localScale = new Vector3(modelScale, modelScale, modelScale);
-
+            instantiatedModel.transform.localScale = new Vector3(modelScales[playerIndex], modelScales[playerIndex], modelScales[playerIndex]);
             instantiatedModel.transform.localRotation = Quaternion.identity;
 
             animator[playerIndex] = instantiatedModel.GetComponent<Animator>();
@@ -241,7 +240,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                animator[playerIndex].Play("Forehand");
+                animator[playerIndex].Play("Backhand");
             }
 
             hitting = false;

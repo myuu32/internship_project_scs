@@ -879,7 +879,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 6129
+  m_VersionIndex: 6138
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1443,9 +1443,12 @@ MonoBehaviour:
   - {fileID: 6245974657151321597, guid: 9c5bb3e9aae6244898efba6a6cdbddaa, type: 3}
   - {fileID: 8729262322419691477, guid: 0de702bf4f72c4ec59a2e87a5c515ab4, type: 3}
   animator:
-  - {fileID: 0}
-  - {fileID: 0}
-  modelScale: 0.013
+  - {fileID: 794274708871005501, guid: 9c5bb3e9aae6244898efba6a6cdbddaa, type: 3}
+  - {fileID: 2634444897784655637, guid: 0de702bf4f72c4ec59a2e87a5c515ab4, type: 3}
+  modelScales:
+  - 0.015
+  - 0.015
+  - 0.015
   modelPosition: {x: 0, y: -0.5, z: 0}
   gravity: 9.81
 --- !u!114 &3391958128180699685

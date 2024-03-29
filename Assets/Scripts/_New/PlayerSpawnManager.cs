@@ -9,11 +9,13 @@ public class PlayerSpawnManager : MonoBehaviour
 
     private bool[] locationOccupied;
     private PlayerInputManager playerInputManager;
+    private PlayerInput[] playerInputs; // Array to keep track of all players
 
     private void Awake()
     {
         playerInputManager = GetComponent<PlayerInputManager>();
         locationOccupied = new bool[spawnLocations.Length];
+        playerInputs = new PlayerInput[playerInputManager.maxPlayerCount]; // Initialize the array
 
         if (playerInputManager != null)
         {
@@ -25,6 +27,9 @@ public class PlayerSpawnManager : MonoBehaviour
     {
         Debug.Log("PlayerInput ID: " + playerInput.playerIndex);
         StartCoroutine(AssignSpawnLocation(playerInput));
+
+        // Store the player input in the array for later reference
+        playerInputs[playerInput.playerIndex] = playerInput;
     }
 
     private IEnumerator AssignSpawnLocation(PlayerInput playerInput)
@@ -60,6 +65,38 @@ public class PlayerSpawnManager : MonoBehaviour
         else
         {
             Debug.LogWarning("Unable to find a safe spawn location. Consider alternative strategies.");
+        }
+    }
+
+    private void Update()
+    {
+        // Check if F5 is pressed
+        if (Keyboard.current.f5Key.wasPressedThisFrame)
+        {
+            ResetPlayerPositions();
+        }
+    }
+
+    private void ResetPlayerPositions()
+    {
+        for (int i = 0; i < playerInputs.Length; i++)
+        {
+            if (playerInputs[i] != null)
+            {
+                // Reset the position of each player to their start position
+                playerInputs[i].gameObject.transform.position =
+                    playerInputs[i].gameObject.GetComponent<PlayerDetails>().startPos;
+
+                // If needed, reset the rotation as well
+                if (i == 1)
+                {
+                    playerInputs[i].gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
+                }
+                else
+                {
+                    playerInputs[i].gameObject.transform.rotation = Quaternion.identity;
+                }
+            }
         }
     }
 
