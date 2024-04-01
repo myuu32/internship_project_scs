@@ -147,6 +147,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aa5d7d4020bb4890a5529e91dafd147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerima1: {fileID: 0}
+  playerimg2: {fileID: 0}
 --- !u!96 &-512567509815833464
 TrailRenderer:
   serializedVersion: 3

@@ -16,8 +16,7 @@ public class PlayerController : MonoBehaviour
 
     public GameObject[] playerModels;
     public Animator[] animator;
-    public float[] modelScales = { 1.0f, 1.0f, 1.0f };
-    public Vector3 modelPosition = Vector3.zero;
+    public float[][] modelScales = { new float[] { 0.02f, 0.015f, 0.02f }, new float[] { 0.02f, 0.015f, 0.02f }, new float[] { 0.02f, 0.015f, 0.02f } }; public Vector3 modelPosition = Vector3.zero;
 
 
     [SerializeField] private float gravity = 9.81f;
@@ -63,7 +62,7 @@ public class PlayerController : MonoBehaviour
             GameObject instantiatedModel = Instantiate(selectedModel, transform.position, transform.rotation, transform);
 
             instantiatedModel.transform.localPosition = modelPosition;
-            instantiatedModel.transform.localScale = new Vector3(modelScales[playerIndex], modelScales[playerIndex], modelScales[playerIndex]);
+            instantiatedModel.transform.localScale = new Vector3(modelScales[playerIndex][0], modelScales[playerIndex][1], modelScales[playerIndex][2]);
             instantiatedModel.transform.localRotation = Quaternion.identity;
 
             animator[playerIndex] = instantiatedModel.GetComponent<Animator>();

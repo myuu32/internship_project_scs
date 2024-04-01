@@ -265,7 +265,7 @@ TextureImporter:
         width: 66
         height: 40
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -273,6 +273,27 @@ TextureImporter:
       bones: []
       spriteID: 8e5fa0a62602e45d788fea882431cba6
       internalID: -759666909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayUI_8
+      rect:
+        serializedVersion: 2
+        x: 1511
+        y: 469
+        width: 61
+        height: 153
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 66f05cbce170146538ed0352cfb0056d
+      internalID: -2070844117
       vertices: []
       indices: 
       edges: []
@@ -296,6 +317,7 @@ TextureImporter:
       PlayUI_5: -195924713
       PlayUI_6: -1167025661
       PlayUI_7: -759666909
+      PlayUI_8: -2070844117
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

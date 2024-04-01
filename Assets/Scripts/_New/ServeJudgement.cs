@@ -6,6 +6,8 @@ public class ServeJudgement : MonoBehaviour
     public Transform ballpointA;
     public Transform ballpointB;
     public GameObject tennisBallPrefab;
+    public GameObject playerimg1;
+    public GameObject playerimg2;
 
     private bool isServed = false;
 
@@ -51,16 +53,31 @@ public class ServeJudgement : MonoBehaviour
         var bots = GameObject.FindGameObjectsWithTag("Bot");
 
         Transform spawnPoint;
+        GameObject activePlayerImage;
 
         if (players.Length == 1 && bots.Length == 1)
         {
             spawnPoint = ballpointA;
+            activePlayerImage = playerimg1;
         }
         else
         {
-            spawnPoint = Random.Range(0, 2) == 0 ? ballpointA : ballpointB;
+            var playerInput = players[0].GetComponent<PlayerInput>();
+            if (playerInput != null && playerInput.playerIndex == 0)
+            {
+                spawnPoint = ballpointA;
+                activePlayerImage = playerimg1;
+            }
+            else
+            {
+                spawnPoint = Random.Range(0, 2) == 0 ? ballpointA : ballpointB;
+                activePlayerImage = playerimg2;
+            }
         }
 
+        activePlayerImage.SetActive(true);
         Instantiate(tennisBallPrefab, spawnPoint.position, Quaternion.identity);
     }
+
+
 }

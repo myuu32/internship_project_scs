@@ -3,6 +3,7 @@ using UnityEngine;
 public class TennisBall : MonoBehaviour
 {
     private ScoreManager scoreManager;
+    public GameObject playerima1, playerimg2;
 
     private void Start()
     {
@@ -19,7 +20,7 @@ public class TennisBall : MonoBehaviour
             if (playerCount == 2)
             {
                 scoreManager.AddScorePlayer2(1);
-                RespawnAt("BallPointA");
+                RespawnAt("BallPointB");
             }
             else if (playerCount == 1 && botCount == 1)
             {
@@ -31,7 +32,8 @@ public class TennisBall : MonoBehaviour
             if (playerCount == 2)
             {
                 scoreManager.AddScorePlayer1(1);
-                RespawnAt("BallPointB");
+                RespawnAt("BallPointA");
+                playerimg2.SetActive(true);
             }
             else if (playerCount == 1 && botCount == 1)
             {

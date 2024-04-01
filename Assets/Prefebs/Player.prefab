@@ -879,7 +879,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 6138
+  m_VersionIndex: 6156
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1045,13 +1045,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6325111674203254151}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.19080733, y: 0.0007776177, z: -0.004000498, w: 0.98161906}
+  m_LocalRotation: {x: 0.13052507, y: 0.0005319429, z: -0.0040405085, w: 0.99143666}
   m_LocalPosition: {x: 96.3, y: 32.6, z: 34.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7938525931793487358}
-  m_LocalEulerAnglesHint: {x: 22, y: 0, z: -0.467}
+  m_LocalEulerAnglesHint: {x: 15, y: 0, z: -0.467}
 --- !u!20 &9126460703126903393
 Camera:
   m_ObjectHideFlags: 0
@@ -1171,8 +1171,8 @@ MonoBehaviour:
   - {x: 0, y: 0, z: -45}
   - {x: 0, y: 0, z: 45}
   boundsCenters:
-  - {x: 50, y: 30}
-  - {x: 50, y: 30}
+  - {x: 50, y: 35}
+  - {x: 50, y: 35}
   boundsSizes:
   - {x: 200, y: 10}
   - {x: 200, y: 10}
@@ -1237,7 +1237,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   followTarget: {fileID: 735652951773549905}
   playerObject: {fileID: 9023439281179589058}
-  player2camRotation: 22
+  player2camRotation: 15
 --- !u!1 &9023439281179589058
 GameObject:
   m_ObjectHideFlags: 0
@@ -1445,10 +1445,6 @@ MonoBehaviour:
   animator:
   - {fileID: 794274708871005501, guid: 9c5bb3e9aae6244898efba6a6cdbddaa, type: 3}
   - {fileID: 2634444897784655637, guid: 0de702bf4f72c4ec59a2e87a5c515ab4, type: 3}
-  modelScales:
-  - 0.015
-  - 0.015
-  - 0.015
   modelPosition: {x: 0, y: -0.5, z: 0}
   gravity: 9.81
 --- !u!114 &3391958128180699685

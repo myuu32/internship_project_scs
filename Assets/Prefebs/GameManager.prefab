@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 569394055627087471}
   - component: {fileID: 7545925676132140218}
+  - component: {fileID: 6131396610635617556}
+  - component: {fileID: 3059664034594028006}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -45,3 +47,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 0}
+--- !u!114 &6131396610635617556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6748778399776324323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bcf7fc1b2d3b4e18b6251f353fa9ee7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ballpointA: {fileID: 0}
+  ballpointB: {fileID: 0}
+  tennisBallPrefab: {fileID: 9142735276358196376, guid: 82b0844f1e88e4ffe81fb0d62e7131b0,
+    type: 3}
+--- !u!114 &3059664034594028006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6748778399776324323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02ffc5bf08340487a998a1068060df72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backgroung: {fileID: 0}
+  gameStatus: {fileID: 0}
+  player1: {fileID: 0}
+  player2: {fileID: 0}

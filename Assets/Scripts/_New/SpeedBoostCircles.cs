@@ -2,7 +2,11 @@ using UnityEngine;
 
 public class SpeedBoostCircles : MonoBehaviour
 {
-    public float speedBoostAmount = 5f;
+    public Vector3 boostDirectionPositive = new Vector3(0, 1, 0);
+    public Vector3 boostDirectionNegative = new Vector3(0, -1, 0);
+
+    public float speedBoostAmountPositive = 5f;
+    public float speedBoostAmountNegative = 5f;
 
     public float speed = 5f;
     public float range = 5f;
@@ -48,7 +52,7 @@ public class SpeedBoostCircles : MonoBehaviour
         }
     }
 
-    void OnTriggerStay(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("TennisBall"))
         {
@@ -56,11 +60,48 @@ public class SpeedBoostCircles : MonoBehaviour
             if (rb != null)
             {
                 Vector3 ballPosition = other.transform.position;
+                float posX = ballPosition.x;
+                float posY = ballPosition.y;
+                float posZ = ballPosition.z;
 
-                Vector3 boostDirection = ballPosition.z > transform.position.z ? Vector3.forward : Vector3.back;
+                Vector3 boostDirection;
+                float boostAmount;
 
-                Vector3 boostVelocity = boostDirection * speedBoostAmount * Time.deltaTime;
+                if (posX >= transform.position.x)
+                {
+                    boostDirection = boostDirectionPositive;
+                    boostAmount = speedBoostAmountPositive;
+                }
+                else
+                {
+                    boostDirection = boostDirectionNegative;
+                    boostAmount = speedBoostAmountNegative;
+                }
 
+                if (posY >= transform.position.y)
+                {
+                    boostDirection = boostDirectionPositive;
+                    boostAmount = speedBoostAmountPositive;
+                }
+                else
+                {
+                    boostDirection = boostDirectionNegative;
+                    boostAmount = speedBoostAmountNegative;
+                }
+
+                if (posZ >= transform.position.z)
+                {
+                    boostDirection = boostDirectionPositive;
+                    boostAmount = speedBoostAmountPositive;
+                }
+                else
+                {
+                    boostDirection = boostDirectionNegative;
+                    boostAmount = speedBoostAmountNegative;
+                }
+
+                // 应用加速度
+                Vector3 boostVelocity = boostDirection.normalized * boostAmount * Time.deltaTime;
                 rb.velocity += boostVelocity;
 
                 Debug.Log("SpeedBoost Applied");
