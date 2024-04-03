@@ -58,4 +58,18 @@ public class CameraManager_2P : MonoBehaviour
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * t);
         transform.position = smoothedPosition;
     }
+
+    public void UpdateCameraPositionImmediately()
+    {
+        if (followTarget == null) return;
+        Vector3 targetPosition = followTarget.transform.position + offsets[0];
+        transform.position = targetPosition;
+    }
+
+    public void UpdatePositionForZoom(Vector3 playerPosition)
+    {
+        Vector3 newCameraPosition = playerPosition + new Vector3(0, 1, -5);
+        transform.position = newCameraPosition;
+    }
+
 }

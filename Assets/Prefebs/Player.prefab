@@ -51,7 +51,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6289462209802394137
 Transform:
   m_ObjectHideFlags: 0
@@ -1447,6 +1447,25 @@ MonoBehaviour:
   - {fileID: 2634444897784655637, guid: 0de702bf4f72c4ec59a2e87a5c515ab4, type: 3}
   modelPosition: {x: 0, y: -0.5, z: 0}
   gravity: 9.81
+  slowdownTimeLength: 1
+  slowdownDuration: 1
+  slowdownDelay: 0.1
+  shakeIntensity: 1
+  shakeDuration: 1
+  shakeDelay: 0.1
+  cameraZoomAmount: 0.5
+  offsets: []
+  cameraManager: {fileID: 3085453121089055090}
+  offsetChangeAmounts:
+  - 10
+  - -10
+  offsetChangeDelays:
+  - 0
+  - 0
+  offsetChangeDurations:
+  - 0.5
+  - 0.5
+  camera: {fileID: 9126460703126903393}
 --- !u!114 &3391958128180699685
 MonoBehaviour:
   m_ObjectHideFlags: 0

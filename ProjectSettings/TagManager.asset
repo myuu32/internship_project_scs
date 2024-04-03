@@ -18,6 +18,8 @@ TagManager:
   - WallB
   - BallPointA
   - BallPointB
+  - Serve1P
+  - Serve2P
   layers:
   - Default
   - TransparentFX

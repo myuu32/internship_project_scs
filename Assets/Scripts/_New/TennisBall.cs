@@ -3,7 +3,7 @@ using UnityEngine;
 public class TennisBall : MonoBehaviour
 {
     private ScoreManager scoreManager;
-    public GameObject playerima1, playerimg2;
+    public GameObject playerimg1, playerimg2;
 
     private void Start()
     {
@@ -21,6 +21,7 @@ public class TennisBall : MonoBehaviour
             {
                 scoreManager.AddScorePlayer2(1);
                 RespawnAt("BallPointB");
+                playerimg2.SetActive(true);
             }
             else if (playerCount == 1 && botCount == 1)
             {
@@ -33,7 +34,8 @@ public class TennisBall : MonoBehaviour
             {
                 scoreManager.AddScorePlayer1(1);
                 RespawnAt("BallPointA");
-                playerimg2.SetActive(true);
+                GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Serve2P");
+                playerimg1.SetActive(true);
             }
             else if (playerCount == 1 && botCount == 1)
             {

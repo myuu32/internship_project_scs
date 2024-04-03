@@ -68,38 +68,6 @@ public class PlayerSpawnManager : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        // Check if F5 is pressed
-        if (Keyboard.current.f5Key.wasPressedThisFrame)
-        {
-            ResetPlayerPositions();
-        }
-    }
-
-    private void ResetPlayerPositions()
-    {
-        for (int i = 0; i < playerInputs.Length; i++)
-        {
-            if (playerInputs[i] != null)
-            {
-                // Reset the position of each player to their start position
-                playerInputs[i].gameObject.transform.position =
-                    playerInputs[i].gameObject.GetComponent<PlayerDetails>().startPos;
-
-                // If needed, reset the rotation as well
-                if (i == 1)
-                {
-                    playerInputs[i].gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
-                }
-                else
-                {
-                    playerInputs[i].gameObject.transform.rotation = Quaternion.identity;
-                }
-            }
-        }
-    }
-
     private int FindAvailableSpawnIndex()
     {
         for (int i = 0; i < locationOccupied.Length; i++)

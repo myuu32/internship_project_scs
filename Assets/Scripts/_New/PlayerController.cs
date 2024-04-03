@@ -1,5 +1,5 @@
-
 using UnityEngine;
+using System.Collections;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
@@ -26,9 +26,11 @@ public class PlayerController : MonoBehaviour
     private bool hittingLeft;
     private bool hittingRight;
     private GameObject ball;
+    private string pointATag = "PointA";
+    private string pointBTag = "PointB";
 
     private Vector2 moveInput;
-    private float turnSmoothVelocity;
+    private bool hasReset = false;
     private bool isSprinting = false;
     private bool isSliding = false;
     private float sprintTimer = 0f;
@@ -37,6 +39,30 @@ public class PlayerController : MonoBehaviour
     private ServeManager serveManager;
     private Serve currentServe;
     private bool hitting = false;
+
+    [Header("Slow Motion Parameters")]
+    public float slowdownTimeLength = 0.5f;
+    public float slowdownDuration = 2f;
+    public float slowdownDelay = 0.5f;
+
+    [Header("Camera Shake Parameters")]
+    public float shakeIntensity = 0.2f;
+    public float shakeDuration = 0.1f;
+    public float shakeDelay = 0.5f;
+
+    [Header("Camera Zoom In/ Out ")]
+    public float cameraZoomAmount = 0.5f;
+    public Vector3[] offsets;
+
+    public CameraManager_2P cameraManager; // 引用 CameraManager_2P 腳本
+    public float[] offsetChangeAmounts; // 偏移量變化的量
+    public float[] offsetChangeDelays; // 偏移量變化的延遲時間
+    public float[] offsetChangeDurations; // 偏移量變化的持續時間
+
+    private Vector3 originalCameraOffset; // 用於儲存原始偏移量的變量
+    private bool isHitting = false;
+    private Vector3 ballDir;
+    public Camera camera;
 
     private void Awake()
     {
@@ -71,6 +97,11 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogError("Player index out of range for player models array!");
         }
+
+        if (cameraManager != null && playerIndex >= 0 && playerIndex < cameraManager.offsets.Length)
+        {
+            originalCameraOffset = cameraManager.offsets[playerIndex];
+        }
     }
 
     private void Update()
@@ -104,6 +135,18 @@ public class PlayerController : MonoBehaviour
         if ((h != 0 || v != 0) && !hittingLeft && !hittingRight)
         {
             transform.Translate(new Vector3(h, 0, v) * aimSpeeds[0] * Time.deltaTime);
+        }
+
+        if (!hasReset)
+        {
+            int playerIndex = GetComponent<PlayerInput>().playerIndex;
+            if (playerIndex >= 1) ResetPoint();
+            hasReset = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            ResetPoint();
         }
     }
 
@@ -151,6 +194,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void ResetCameraOffset()
+    {
+        int playerIndex = GetComponent<PlayerInput>().playerIndex;
+        if (cameraManager != null && playerIndex >= 0 && playerIndex < cameraManager.offsets.Length)
+        {
+            cameraManager.offsets[playerIndex] = originalCameraOffset;
+        }
+    }
+
     private void MovePlayer()
     {
         Vector3 moveInputDirection = new Vector3(moveInput.x, 0, moveInput.y);
@@ -173,9 +225,6 @@ public class PlayerController : MonoBehaviour
 
         ApplyGravity();
     }
-
-
-
 
     private void ApplyGravity()
     {
@@ -226,28 +275,137 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag("TennisBall") && hitting)
         {
-            Vector3 dir = aimTarget.position - transform.position;
-            other.GetComponent<Rigidbody>().velocity = dir.normalized * currentServe.hitForce + new Vector3(0, currentServe.upForce, 0);
+            if (!isHitting)
+            {
+                isHitting = true;
 
-            Vector3 ballDir = ball.transform.position - transform.position;
+                StartCoroutine(SlowMotionEffect(slowdownTimeLength, slowdownDuration, slowdownDelay));
+                StartCoroutine(CameraShake(shakeIntensity, shakeDuration, shakeDelay));
 
+                Vector3 dir = aimTarget.position - transform.position;
+                Vector3 ballDir = ball.transform.position - transform.position;
+
+                other.GetComponent<Rigidbody>().velocity = dir.normalized * currentServe.hitForce + new Vector3(0, currentServe.upForce, 0);
+
+                int playerIndex = GetComponent<PlayerInput>().playerIndex;
+
+                if (ballDir.x >= 0)
+                {
+                    if (playerIndex == 0) animator[playerIndex].Play("Forehand");
+                    if (playerIndex == 1) animator[playerIndex].Play("Backhand");
+                    Debug.Log("Forehand");
+                }
+                else
+                {
+                    if (playerIndex == 0) animator[playerIndex].Play("Backhand");
+                    if (playerIndex == 1) animator[playerIndex].Play("Forehand");
+                    Debug.Log("Backhand");
+                }
+
+                StartCoroutine(ChangeCameraOffset(offsetChangeAmounts[playerIndex], offsetChangeDelays[playerIndex], offsetChangeDurations[playerIndex]));
+
+                isHitting = false;
+                hitting = false;
+            }
+        }
+    }
+
+
+    private IEnumerator ChangeCameraOffset(float amount, float delay, float duration)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (cameraManager != null && cameraManager.offsets != null && cameraManager.offsets.Length >= 2)
+        {
             int playerIndex = GetComponent<PlayerInput>().playerIndex;
 
-            if (ballDir.x >= 0)
+            if (playerIndex >= 0 && playerIndex < cameraManager.offsets.Length)
             {
-                animator[playerIndex].Play("Forehand");
+                Vector3 currentOffset = cameraManager.offsets[playerIndex];
+                Vector3 originalOffset = currentOffset;
+
+                currentOffset.z += amount;
+                cameraManager.offsets[playerIndex] = currentOffset;
+
+                yield return new WaitForSeconds(duration);
+                cameraManager.offsets[playerIndex] = originalOffset;
+
+                ResetCameraOffset();
+            }
+        }
+    }
+
+
+    private IEnumerator SlowMotionEffect(float slowdownTimeLength, float duration, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        float originalTimeScale = Time.timeScale;
+        Time.timeScale = slowdownTimeLength;
+
+        yield return new WaitForSecondsRealtime(duration);
+
+        Time.timeScale = originalTimeScale;
+    }
+
+    private IEnumerator CameraShake(float intensity, float duration, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        Vector3 originalCamPos = camera.transform.localPosition;
+
+        float elapsed = 0.0f;
+        float zoom = 1.0f - cameraZoomAmount;
+
+        while (elapsed < duration)
+        {
+            float x = Random.Range(-1f, 1f) * intensity * zoom;
+            float y = Random.Range(-1f, 1f) * intensity * zoom;
+
+            camera.transform.localPosition = new Vector3(originalCamPos.x + x, originalCamPos.y + y, originalCamPos.z);
+
+            elapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        camera.transform.localPosition = originalCamPos;
+    }
+
+
+    public void ResetPoint()
+    {
+        int playerIndex = GetComponent<PlayerInput>().playerIndex;
+
+        if (playerIndex == 0)
+        {
+            GameObject pointA = GameObject.FindGameObjectWithTag(pointATag);
+            if (pointA != null)
+            {
+                gameObject.transform.position = pointA.transform.position;
             }
             else
             {
-                animator[playerIndex].Play("Backhand");
+                Debug.LogWarning("PointA not found.");
             }
-
-            hitting = false;
         }
-
+        else if (playerIndex == 1)
+        {
+            GameObject pointB = GameObject.FindGameObjectWithTag(pointBTag);
+            if (pointB != null)
+            {
+                gameObject.transform.position = pointB.transform.position;
+            }
+            else
+            {
+                Debug.LogWarning("PointB not found.");
+            }
+        }
     }
 
-    private System.Collections.IEnumerator FindAimTarget()
+
+
+    private IEnumerator FindAimTarget()
     {
         while (true)
         {
@@ -271,7 +429,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    System.Collections.IEnumerator FindBallPos()
+    private IEnumerator FindBallPos()
     {
         while (true)
         {
