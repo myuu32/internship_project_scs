@@ -100,7 +100,6 @@ public class SpeedBoostCircles : MonoBehaviour
                     boostAmount = speedBoostAmountNegative;
                 }
 
-                // 应用加速度
                 Vector3 boostVelocity = boostDirection.normalized * boostAmount * Time.deltaTime;
                 rb.velocity += boostVelocity;
 

@@ -50,19 +50,21 @@ public class PlayerController : MonoBehaviour
     public float shakeDuration = 0.1f;
     public float shakeDelay = 0.5f;
 
-    [Header("Camera Zoom In/ Out ")]
+    //[Header("Camera Zoom In/ Out ")]
     public float cameraZoomAmount = 0.5f;
-    public Vector3[] offsets;
+    //public Vector3[] offsets;
 
-    public CameraManager_2P cameraManager; // 引用 CameraManager_2P 腳本
+    public CameraManager_2P cameraManager;
     public float[] offsetChangeAmounts; // 偏移量變化的量
     public float[] offsetChangeDelays; // 偏移量變化的延遲時間
     public float[] offsetChangeDurations; // 偏移量變化的持續時間
 
     private Vector3 originalCameraOffset; // 用於儲存原始偏移量的變量
     private bool isHitting = false;
-    private Vector3 ballDir;
     public Camera camera;
+    public Transform origintransform;
+    public Camera originalCamera; // 原始摄像机
+    private Camera zoomCamera; // 用于拉近效果的摄像机
 
     private void Awake()
     {
@@ -140,8 +142,11 @@ public class PlayerController : MonoBehaviour
         if (!hasReset)
         {
             int playerIndex = GetComponent<PlayerInput>().playerIndex;
-            if (playerIndex >= 1) ResetPoint();
-            hasReset = true;
+            if (playerIndex >= 1) 
+            {
+                ResetPoint();
+                hasReset = true;
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.F5))
@@ -202,6 +207,20 @@ public class PlayerController : MonoBehaviour
             cameraManager.offsets[playerIndex] = originalCameraOffset;
         }
     }
+
+    /*
+    public void StartZoomIn()
+    {
+        camera.transform.SetParent(transform);
+        Debug.Log("ZoomIn");
+    }
+
+    public void StopZoomIn()
+    {
+        camera.transform.SetParent(origintransform);
+        Debug.Log("ZoomOut");
+    }
+    */
 
     private void MovePlayer()
     {
@@ -293,12 +312,14 @@ public class PlayerController : MonoBehaviour
                 {
                     if (playerIndex == 0) animator[playerIndex].Play("Forehand");
                     if (playerIndex == 1) animator[playerIndex].Play("Backhand");
+                    GetComponent<Animator>().Play("onForehand");
                     Debug.Log("Forehand");
                 }
                 else
                 {
                     if (playerIndex == 0) animator[playerIndex].Play("Backhand");
                     if (playerIndex == 1) animator[playerIndex].Play("Forehand");
+                    GetComponent<Animator>().Play("onForehand");
                     Debug.Log("Backhand");
                 }
 

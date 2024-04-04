@@ -3,11 +3,15 @@ using UnityEngine;
 public class TennisBall : MonoBehaviour
 {
     private ScoreManager scoreManager;
+    private Animator animator;
+
     public GameObject playerimg1, playerimg2;
+
 
     private void Start()
     {
         scoreManager = FindObjectOfType<ScoreManager>();
+        animator = GetComponent<Animator>();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -44,6 +48,15 @@ public class TennisBall : MonoBehaviour
         }
 
         scoreManager.HandleGameStatus(playerCount, botCount);
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.CompareTag("SpeedBoostCircles"))
+        {
+            animator.Play("onFire");
+        }
     }
 
     void RespawnAt(string pointTag)

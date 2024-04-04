@@ -20,6 +20,7 @@ TagManager:
   - BallPointB
   - Serve1P
   - Serve2P
+  - SpeedBoostCircles
   layers:
   - Default
   - TransparentFX

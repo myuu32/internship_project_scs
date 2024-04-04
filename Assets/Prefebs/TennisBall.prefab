@@ -338,6 +338,7 @@ GameObject:
   - component: {fileID: 147184081327581666}
   - component: {fileID: 3857830747913045712}
   - component: {fileID: -512567509815833464}
+  - component: {fileID: 323752880656960996}
   m_Layer: 8
   m_Name: TennisBall
   m_TagString: TennisBall
@@ -516,11 +517,11 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.5
+  m_Time: 0.2
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 3.5
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -533,6 +534,15 @@ TrailRenderer:
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.7675841
+        value: 0.41319448
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -578,6 +588,27 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
+--- !u!95 &323752880656960996
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9142735276358196376}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f306dba09900d4242bed6944df180cc3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &5614815946580854271
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -656,6 +687,11 @@ PrefabInstance:
       propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3225929489572222946, guid: a2d3dde8bf20c40cb80dd5158c2a8001,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 24df83946bc3e43d9812ff0077be8db8, type: 2}
     - target: {fileID: 5022893207394069046, guid: a2d3dde8bf20c40cb80dd5158c2a8001,
         type: 3}
       propertyPath: m_Name
