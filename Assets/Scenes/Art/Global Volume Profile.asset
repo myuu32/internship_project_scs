@@ -24,10 +24,10 @@ MonoBehaviour:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 3
-          time: 0.08445749
-          value: 0.16124952
-          inSlope: -1.0229971
-          outSlope: -1.0229971
+          time: 0.26945716
+          value: 0.20140827
+          inSlope: -1.6565541
+          outSlope: -1.6565541
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
@@ -35,8 +35,8 @@ MonoBehaviour:
         - serializedVersion: 3
           time: 0.9926512
           value: 0.97951794
-          inSlope: 2.45224
-          outSlope: 2.45224
+          inSlope: 2.1311622
+          outSlope: 2.1311622
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
@@ -213,7 +213,7 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 0.94460726, y: 0.98621583, z: 1, w: 0.69438666}
+    m_Value: {x: 0.5502011, y: 0.67574465, z: 1, w: 0.69438666}
   midtones:
     m_OverrideState: 0
     m_Value: {x: 1, y: 0.9774327, z: 0.984367, w: -0.47817042}
@@ -264,7 +264,7 @@ MonoBehaviour:
   active: 1
   lift:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.97502255, z: 0.97502255, w: 0.31185022}
+    m_Value: {x: 1, y: 0.83048236, z: 0.9271646, w: 0.31185022}
   gamma:
     m_OverrideState: 1
     m_Value: {x: 1, y: 1, z: 1, w: -0.11226598}

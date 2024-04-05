@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.25637025, g: 0.668979, b: 0.83586717, a: 1}
+  m_IndirectSpecularColor: {r: 0.311492, g: 0.95310193, b: 0.96178937, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -523,7 +523,7 @@ Light:
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
-  m_ColorTemperature: 6574
+  m_ColorTemperature: 4384
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
@@ -629,12 +629,12 @@ PrefabInstance:
     - target: {fileID: 3501792423306867820, guid: 0a7ca5b21535c6546acc42ac2b18097b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 707.27856
+      value: 922
       objectReference: {fileID: 0}
     - target: {fileID: 3501792423306867820, guid: 0a7ca5b21535c6546acc42ac2b18097b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 54.997925
+      value: 83
       objectReference: {fileID: 0}
     - target: {fileID: 3501792423306867820, guid: 0a7ca5b21535c6546acc42ac2b18097b,
         type: 3}
