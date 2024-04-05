@@ -146,7 +146,7 @@ Material:
     - _NormalsSource: 0
     - _NormalsUVType: 0
     - _OcclusionChannel: 0
-    - _OcclusionStrength: 0.257
+    - _OcclusionStrength: 0.178
     - _OutlineLightingType: 0
     - _OutlineLightingTypeURP: 0
     - _OutlineMaxWidth: 1
