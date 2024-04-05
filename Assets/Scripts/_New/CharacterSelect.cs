@@ -35,6 +35,7 @@ public class CharacterSelect : MonoBehaviour
         }
         else if (player0Exists && player1Exists)
         {
+            FindObjectOfType<PlayerController>().ResetPoint();
             backgroung.SetActive(false);
             player1.SetActive(false);
             player2.SetActive(false);
@@ -44,7 +45,7 @@ public class CharacterSelect : MonoBehaviour
         {
             backgroung.SetActive(true);
             player1.SetActive(true);
-            player2.SetActive(true);
+            player2.SetActive(false);
         }
     }
 }

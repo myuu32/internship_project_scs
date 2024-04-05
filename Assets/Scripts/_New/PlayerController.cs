@@ -66,6 +66,9 @@ public class PlayerController : MonoBehaviour
     public Camera originalCamera; // 原始摄像机
     private Camera zoomCamera; // 用于拉近效果的摄像机
 
+    private bool isSlowMotionActive = false; // 標誌位，檢查慢動作是否已經在進行中
+
+
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -205,6 +208,36 @@ public class PlayerController : MonoBehaviour
         if (cameraManager != null && playerIndex >= 0 && playerIndex < cameraManager.offsets.Length)
         {
             cameraManager.offsets[playerIndex] = originalCameraOffset;
+        }
+    }
+
+    public void ResetPoint()
+    {
+        int playerIndex = GetComponent<PlayerInput>().playerIndex;
+
+        if (playerIndex == 0)
+        {
+            GameObject pointA = GameObject.FindGameObjectWithTag(pointATag);
+            if (pointA != null)
+            {
+                gameObject.transform.position = pointA.transform.position;
+            }
+            else
+            {
+                Debug.LogWarning("PointA not found.");
+            }
+        }
+        else if (playerIndex == 1)
+        {
+            GameObject pointB = GameObject.FindGameObjectWithTag(pointBTag);
+            if (pointB != null)
+            {
+                gameObject.transform.position = pointB.transform.position;
+            }
+            else
+            {
+                Debug.LogWarning("PointB not found.");
+            }
         }
     }
 
@@ -356,9 +389,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
     private IEnumerator SlowMotionEffect(float slowdownTimeLength, float duration, float delay)
     {
+        if (isSlowMotionActive)
+        {
+            yield break;
+        }
+
+        isSlowMotionActive = true;
+
         yield return new WaitForSeconds(delay);
 
         float originalTimeScale = Time.timeScale;
@@ -367,6 +406,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSecondsRealtime(duration);
 
         Time.timeScale = originalTimeScale;
+        isSlowMotionActive = false;
     }
 
     private IEnumerator CameraShake(float intensity, float duration, float delay)
@@ -392,39 +432,6 @@ public class PlayerController : MonoBehaviour
 
         camera.transform.localPosition = originalCamPos;
     }
-
-
-    public void ResetPoint()
-    {
-        int playerIndex = GetComponent<PlayerInput>().playerIndex;
-
-        if (playerIndex == 0)
-        {
-            GameObject pointA = GameObject.FindGameObjectWithTag(pointATag);
-            if (pointA != null)
-            {
-                gameObject.transform.position = pointA.transform.position;
-            }
-            else
-            {
-                Debug.LogWarning("PointA not found.");
-            }
-        }
-        else if (playerIndex == 1)
-        {
-            GameObject pointB = GameObject.FindGameObjectWithTag(pointBTag);
-            if (pointB != null)
-            {
-                gameObject.transform.position = pointB.transform.position;
-            }
-            else
-            {
-                Debug.LogWarning("PointB not found.");
-            }
-        }
-    }
-
-
 
     private IEnumerator FindAimTarget()
     {

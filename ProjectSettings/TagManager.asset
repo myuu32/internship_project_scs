@@ -21,6 +21,8 @@ TagManager:
   - Serve1P
   - Serve2P
   - SpeedBoostCircles
+  - GetPoint1
+  - GetPoint2
   layers:
   - Default
   - TransparentFX

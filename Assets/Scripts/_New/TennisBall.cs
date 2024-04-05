@@ -5,8 +5,7 @@ public class TennisBall : MonoBehaviour
     private ScoreManager scoreManager;
     private Animator animator;
 
-    public GameObject playerimg1, playerimg2;
-
+    public GameObject playerimg1, playerimg2, playerEffect1, playerEffect2;
 
     private void Start()
     {
@@ -26,6 +25,7 @@ public class TennisBall : MonoBehaviour
                 scoreManager.AddScorePlayer2(1);
                 RespawnAt("BallPointB");
                 playerimg2.SetActive(true);
+                playerEffect2.SetActive(true);
             }
             else if (playerCount == 1 && botCount == 1)
             {
@@ -40,6 +40,7 @@ public class TennisBall : MonoBehaviour
                 RespawnAt("BallPointA");
                 GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Serve2P");
                 playerimg1.SetActive(true);
+                playerEffect1.SetActive(true);
             }
             else if (playerCount == 1 && botCount == 1)
             {

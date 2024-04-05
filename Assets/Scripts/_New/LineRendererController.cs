@@ -5,8 +5,8 @@ using UnityEngine.InputSystem;
 public class VerticalCurve : MonoBehaviour
 {
     public int curveResolution = 10;
-    public float height = 5f; // 曲线的高度
-    public float curvePercentage = 1f; // 曲线显示的百分比
+    public float height = 5f;
+    public float curvePercentage = 1f; 
 
     private LineRenderer lineRenderer;
     private Transform startPoint;
@@ -17,11 +17,9 @@ public class VerticalCurve : MonoBehaviour
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = curveResolution + 1;
 
-        // 根据玩家索引选择起点
         int playerIndex = GetComponent<PlayerInput>().playerIndex;
         startPoint = transform;
 
-        // 根据玩家索引选择终点
         endPoint = GameObject.FindGameObjectWithTag(playerIndex == 0 ? "AimTargetA" : "AimTargetB").transform;
     }
 
@@ -40,10 +38,10 @@ public class VerticalCurve : MonoBehaviour
         for (int i = 0; i <= curveResolution; i++)
         {
             float t = (float)i / curveResolution;
-            t *= curvePercentage; // 应用曲线的显示百分比
+            t *= curvePercentage;
 
             points[i] = Vector3.Lerp(startPoint.position, endPoint.position, t);
-            points[i] += Vector3.up * height * Mathf.Sin(t * Mathf.PI); // 加上垂直偏移
+            points[i] += Vector3.up * height * Mathf.Sin(t * Mathf.PI);
         }
 
         lineRenderer.SetPositions(points);

@@ -286,7 +286,7 @@ TextureImporter:
         width: 61
         height: 153
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -294,6 +294,69 @@ TextureImporter:
       bones: []
       spriteID: 66f05cbce170146538ed0352cfb0056d
       internalID: -2070844117
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayUI_9
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 123
+        width: 289
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03f8ecc2fe5d9464ab907865dc345212
+      internalID: 1632385368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayUI_10
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 123
+        width: 300
+        height: 201
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d76df261751b7449da07e069aa1189cc
+      internalID: -118137867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayUI_11
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 38
+        width: 201
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aabed225780ec440dbf5f0db725ef096
+      internalID: -496314357
       vertices: []
       indices: 
       edges: []
@@ -311,6 +374,8 @@ TextureImporter:
     nameFileIdTable:
       PlayUI_0: -692953762
       PlayUI_1: -371385232
+      PlayUI_10: -118137867
+      PlayUI_11: -496314357
       PlayUI_2: 198525026
       PlayUI_3: 1919887651
       PlayUI_4: -408909033
@@ -318,6 +383,7 @@ TextureImporter:
       PlayUI_6: -1167025661
       PlayUI_7: -759666909
       PlayUI_8: -2070844117
+      PlayUI_9: 1632385368
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
