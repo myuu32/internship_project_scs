@@ -1,5 +1,51 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5671056097424466274
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
+  m_Name: DepthOfField
+  m_EditorClassIdentifier: 
+  active: 0
+  mode:
+    m_OverrideState: 1
+    m_Value: 2
+  gaussianStart:
+    m_OverrideState: 0
+    m_Value: 10
+  gaussianEnd:
+    m_OverrideState: 0
+    m_Value: 30
+  gaussianMaxRadius:
+    m_OverrideState: 0
+    m_Value: 1
+  highQualitySampling:
+    m_OverrideState: 0
+    m_Value: 0
+  focusDistance:
+    m_OverrideState: 1
+    m_Value: 21
+  aperture:
+    m_OverrideState: 1
+    m_Value: 5.6
+  focalLength:
+    m_OverrideState: 1
+    m_Value: 48.51
+  bladeCount:
+    m_OverrideState: 0
+    m_Value: 5
+  bladeCurvature:
+    m_OverrideState: 0
+    m_Value: 1
+  bladeRotation:
+    m_OverrideState: 0
+    m_Value: 0
 --- !u!114 &-4252348900432884293
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -24,8 +70,8 @@ MonoBehaviour:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 3
-          time: 0.26945716
-          value: 0.20140827
+          time: 0.2769064
+          value: 0.16436768
           inSlope: -1.6565541
           outSlope: -1.6565541
           tangentMode: 0
@@ -35,8 +81,8 @@ MonoBehaviour:
         - serializedVersion: 3
           time: 0.9926512
           value: 0.97951794
-          inSlope: 2.1311622
-          outSlope: 2.1311622
+          inSlope: 3.1136038
+          outSlope: 3.1136038
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
@@ -213,13 +259,13 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 0.5502011, y: 0.67574465, z: 1, w: 0.69438666}
+    m_Value: {x: 0.5502011, y: 0.67574465, z: 1, w: 0.99619746}
   midtones:
     m_OverrideState: 0
     m_Value: {x: 1, y: 0.9774327, z: 0.984367, w: -0.47817042}
   highlights:
     m_OverrideState: 1
-    m_Value: {x: 0.88886774, y: 0.98976266, z: 1, w: 0.06237069}
+    m_Value: {x: 0.88886774, y: 0.98976266, z: 1, w: -0.022935918}
   shadowsStart:
     m_OverrideState: 0
     m_Value: 0
@@ -249,6 +295,7 @@ MonoBehaviour:
   - {fileID: 3084170897350570864}
   - {fileID: -3131370479282484374}
   - {fileID: -4252348900432884293}
+  - {fileID: -5671056097424466274}
 --- !u!114 &3084170897350570864
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -264,13 +311,13 @@ MonoBehaviour:
   active: 1
   lift:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.8305968, z: 0.96224135, w: 0.31185022}
+    m_Value: {x: 1, y: 0.8161594, z: 0.8594473, w: 0.32699606}
   gamma:
     m_OverrideState: 1
-    m_Value: {x: 0.9157373, y: 0.9368029, z: 1, w: -0.11226598}
+    m_Value: {x: 0.9157373, y: 0.9368029, z: 1, w: 0.07024362}
   gain:
     m_OverrideState: 1
-    m_Value: {x: 0.9920554, y: 0.9841114, z: 1, w: -0.06457028}
+    m_Value: {x: 0.8836605, y: 0.8884979, z: 1, w: -0.095056444}
 --- !u!114 &3664775778562054990
 MonoBehaviour:
   m_ObjectHideFlags: 3
