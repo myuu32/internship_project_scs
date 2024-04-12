@@ -57,6 +57,7 @@ public class PauseManager : MonoBehaviour
         // ポーズメニューを無効にする
         if (pauseMenu != null)
         {
+            new WaitForSeconds(0.5f);
             pauseMenu.SetActive(false);
         }
     }

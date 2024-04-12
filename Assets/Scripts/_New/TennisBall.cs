@@ -7,6 +7,9 @@ public class TennisBall : MonoBehaviour
 
     public GameObject playerimg1, playerimg2, playerEffect1, playerEffect2;
 
+    private int lastPlayerID = 0;
+    private int groundHitCount = 0;
+
     private void Start()
     {
         scoreManager = FindObjectOfType<ScoreManager>();
@@ -17,6 +20,33 @@ public class TennisBall : MonoBehaviour
     {
         int playerCount = GameObject.FindGameObjectsWithTag("Player").Length;
         int botCount = GameObject.FindGameObjectsWithTag("Bot").Length;
+
+        PlayerDetails playerDetails = collision.gameObject.GetComponent<PlayerDetails>();
+        if (playerDetails != null)
+        {
+            lastPlayerID = playerDetails.playerID;
+            groundHitCount = 0;
+        }
+        else if (collision.transform.CompareTag("Ground"))
+        {
+            if (lastPlayerID > 0)
+            {
+                groundHitCount++;
+                if (groundHitCount == 2)
+                {
+                    if (lastPlayerID == 1)
+                    {
+                        Debug.Log("player1 win");
+                    }
+                    else if (lastPlayerID == 2)
+                    {
+                        Debug.Log("player2 win");
+                    }
+                    lastPlayerID = 0;
+                    groundHitCount = 0;
+                }
+            }
+        }
 
         if (collision.transform.CompareTag("WallA"))
         {
@@ -49,7 +79,6 @@ public class TennisBall : MonoBehaviour
         }
 
         scoreManager.HandleGameStatus(playerCount, botCount);
-
     }
 
     private void OnTriggerEnter(Collider other)
@@ -82,5 +111,4 @@ public class TennisBall : MonoBehaviour
             Debug.LogError("Respawn point with tag " + pointTag + " not found.");
         }
     }
-
 }

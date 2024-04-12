@@ -16,6 +16,7 @@ public class SceneButton
 
 public class SceneSwitcher : MonoBehaviour
 {
+    public float delayTime = 2f; // 延遲時間
     public SceneButton[] sceneButtons; // ボタンのリスト
 
 #if UNITY_EDITOR
@@ -46,6 +47,14 @@ public class SceneSwitcher : MonoBehaviour
     // 指定されたシーンに切り替えるメソッド
     public void SwitchScene(string sceneName)
     {
+        Time.timeScale = 1f;
+        StartCoroutine(DelayedSceneSwitch(sceneName)); // 使用協程實現延遲切換場景
+    }
+
+    // 延遲切換場景的協程方法
+    private IEnumerator DelayedSceneSwitch(string sceneName)
+    {
+        yield return new WaitForSeconds(delayTime); // 延遲指定時間
         SceneManager.LoadScene(sceneName); // SceneManagerを使用してシーンを読み込む
     }
 }

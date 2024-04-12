@@ -6,6 +6,7 @@ public class PlayerSpawnManager : MonoBehaviour
 {
     public Transform[] spawnLocations;
     public GameObject ground;
+    public GameObject GameTIme;
 
     private bool[] locationOccupied;
     private PlayerInputManager playerInputManager;
@@ -55,6 +56,7 @@ public class PlayerSpawnManager : MonoBehaviour
             if (spawnIndex == 1)
             {
                 playerInput.gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
+                GameTIme.SetActive(true);
             }
 
             playerInput.gameObject.GetComponent<PlayerDetails>().playerID = spawnIndex + 1;
