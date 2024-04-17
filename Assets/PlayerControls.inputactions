@@ -231,6 +231,11 @@
                     "isOR": false
                 }
             ]
+        },
+        {
+            "name": "Player2",
+            "bindingGroup": "Player2",
+            "devices": []
         }
     ]
 }

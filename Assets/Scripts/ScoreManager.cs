@@ -10,6 +10,8 @@ public class ScoreManager : MonoBehaviour
 
     public TextMeshProUGUI scoreTextPlayer1;
     public TextMeshProUGUI scoreTextPlayer2;
+    public TextMeshProUGUI scoreTextPlayer1Result;
+    public TextMeshProUGUI scoreTextPlayer2Result;
     public GameObject gameStatusUI;
 
     private bool gameStatus = true;
@@ -70,6 +72,8 @@ public class ScoreManager : MonoBehaviour
     public void ShowResultMenu()
     {
         Debug.Log("Show Result Menu");
+        scoreTextPlayer1Result.text = scorePlayer1.ToString();
+        scoreTextPlayer2Result.text = scorePlayer2.ToString();
     }
 
     public void HandleGameStatus(int playerCount, int botCount)

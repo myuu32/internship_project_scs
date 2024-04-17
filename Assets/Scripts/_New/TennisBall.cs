@@ -7,7 +7,7 @@ public class TennisBall : MonoBehaviour
 
     public GameObject playerimg1, playerimg2, playerEffect1, playerEffect2;
 
-    private int lastPlayerID = 0;
+    public int lastPlayerID = 0;
     private int groundHitCount = 0;
 
     private void Start()
@@ -16,76 +16,53 @@ public class TennisBall : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        int playerCount = GameObject.FindGameObjectsWithTag("Player").Length;
-        int botCount = GameObject.FindGameObjectsWithTag("Bot").Length;
-
-        PlayerDetails playerDetails = collision.gameObject.GetComponent<PlayerDetails>();
-        if (playerDetails != null)
-        {
-            lastPlayerID = playerDetails.playerID;
-            groundHitCount = 0;
-        }
-        else if (collision.transform.CompareTag("Ground"))
-        {
-            if (lastPlayerID > 0)
-            {
-                groundHitCount++;
-                if (groundHitCount == 2)
-                {
-                    if (lastPlayerID == 1)
-                    {
-                        Debug.Log("player1 win");
-                    }
-                    else if (lastPlayerID == 2)
-                    {
-                        Debug.Log("player2 win");
-                    }
-                    lastPlayerID = 0;
-                    groundHitCount = 0;
-                }
-            }
-        }
-
-        if (collision.transform.CompareTag("WallA"))
-        {
-            if (playerCount == 2)
-            {
-                scoreManager.AddScorePlayer2(1);
-                RespawnAt("BallPointB");
-                playerimg2.SetActive(true);
-                playerEffect2.SetActive(true);
-            }
-            else if (playerCount == 1 && botCount == 1)
-            {
-                RespawnAt("BallPointA");
-            }
-        }
-        else if (collision.transform.CompareTag("WallB"))
-        {
-            if (playerCount == 2)
-            {
-                scoreManager.AddScorePlayer1(1);
-                RespawnAt("BallPointA");
-                GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Serve2P");
-                playerimg1.SetActive(true);
-                playerEffect1.SetActive(true);
-            }
-            else if (playerCount == 1 && botCount == 1)
-            {
-                RespawnAt("BallPointA");
-            }
-        }
-
-        scoreManager.HandleGameStatus(playerCount, botCount);
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.CompareTag("SpeedBoostCircles"))
+        if (other.CompareTag("Player"))
+        {
+            PlayerDetails playerDetails = other.GetComponent<PlayerDetails>();
+            if (playerDetails != null)
+            {
+                lastPlayerID = playerDetails.playerID;
+                groundHitCount = 0;
+            }
+        }
+        else if (other.CompareTag("Ground"))
+        {
+            groundHitCount++;
+            if (groundHitCount == 2)
+            {
+                if (lastPlayerID == 1 || lastPlayerID == 2)
+                {
+                    Debug.Log("Player " + lastPlayerID + " wins!");
+                }
+                lastPlayerID = 0;
+                groundHitCount = 0;
+            }
+        }
+        else if (other.CompareTag("SpeedBoostCircles"))
         {
             animator.Play("onFire");
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("WallA"))
+        {
+            // Handle collision with WallA
+            scoreManager.AddScorePlayer2(1);
+            RespawnAt("BallPointB");
+            playerimg2.SetActive(true);
+            playerEffect2.SetActive(true);
+        }
+        else if (collision.gameObject.CompareTag("WallB"))
+        {
+            // Handle collision with WallB
+            scoreManager.AddScorePlayer1(1);
+            RespawnAt("BallPointA");
+            playerimg1.SetActive(true);
+            playerEffect1.SetActive(true);
         }
     }
 

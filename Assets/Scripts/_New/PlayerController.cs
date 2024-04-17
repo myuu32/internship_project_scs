@@ -346,14 +346,12 @@ public class PlayerController : MonoBehaviour
                     if (playerIndex == 0) animator[playerIndex].Play("Forehand");
                     if (playerIndex == 1) animator[playerIndex].Play("Backhand");
                     GetComponent<Animator>().Play("onForehand");
-                    Debug.Log("Forehand");
                 }
                 else
                 {
                     if (playerIndex == 0) animator[playerIndex].Play("Backhand");
                     if (playerIndex == 1) animator[playerIndex].Play("Forehand");
                     GetComponent<Animator>().Play("onForehand");
-                    Debug.Log("Backhand");
                 }
 
                 StartCoroutine(ChangeCameraOffset(offsetChangeAmounts[playerIndex], offsetChangeDelays[playerIndex], offsetChangeDurations[playerIndex]));
