@@ -51,6 +51,11 @@ public class SceneSwitcher : MonoBehaviour
         StartCoroutine(DelayedSceneSwitch(sceneName)); // 使用協程實現延遲切換場景
     }
 
+    public void QuitGame()
+    {
+            Application.Quit();
+    }
+
     // 延遲切換場景的協程方法
     private IEnumerator DelayedSceneSwitch(string sceneName)
     {

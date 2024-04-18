@@ -13,6 +13,7 @@ public class ScoreManager : MonoBehaviour
     public TextMeshProUGUI scoreTextPlayer1Result;
     public TextMeshProUGUI scoreTextPlayer2Result;
     public GameObject gameStatusUI;
+    public GameObject winnerImage1, winnerImage2, buttonAgain, buttonExit;
 
     private bool gameStatus = true;
 
@@ -71,7 +72,6 @@ public class ScoreManager : MonoBehaviour
 
     public void ShowResultMenu()
     {
-        Debug.Log("Show Result Menu");
         scoreTextPlayer1Result.text = scorePlayer1.ToString();
         scoreTextPlayer2Result.text = scorePlayer2.ToString();
     }
@@ -92,5 +92,29 @@ public class ScoreManager : MonoBehaviour
     public void GameTimeStop()
     {
         Time.timeScale = 0f;
+    }
+
+    public void WinnerImage ()
+    {
+        if (scorePlayer1 == scorePlayer2)
+        {
+            winnerImage1.SetActive(false);
+            winnerImage2.SetActive(false);
+            buttonAgain.SetActive(true);
+            buttonExit.SetActive(true);
+        }
+        else if (scorePlayer1 > scorePlayer2)
+        {
+            winnerImage1.SetActive(true);
+            buttonAgain.SetActive(true);
+            buttonExit.SetActive(true);
+        }
+
+        else
+        {
+            winnerImage2.SetActive(true);
+            buttonAgain.SetActive(true);
+            buttonExit.SetActive(true);
+        }
     }
 }
