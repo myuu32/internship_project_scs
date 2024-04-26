@@ -50,15 +50,20 @@ public class TennisBall : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("WallA"))
         {
-            // Handle collision with WallA
-            scoreManager.AddScorePlayer2(1);
-            RespawnAt("BallPointB");
-            playerimg2.SetActive(true);
-            playerEffect2.SetActive(true);
+            if (GameObject.FindGameObjectWithTag("Bot") != null)
+            {
+                RespawnAt("BallPointA");
+            }
+            else
+            {
+                scoreManager.AddScorePlayer2(1);
+                RespawnAt("BallPointB");
+                playerimg2.SetActive(true);
+                playerEffect2.SetActive(true);
+            }
         }
         else if (collision.gameObject.CompareTag("WallB"))
         {
-            // Handle collision with WallB
             scoreManager.AddScorePlayer1(1);
             RespawnAt("BallPointA");
             playerimg1.SetActive(true);

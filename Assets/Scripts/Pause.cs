@@ -2,13 +2,12 @@ using UnityEngine;
 
 public class PauseManager : MonoBehaviour
 {
-    [SerializeField] private GameObject pauseMenu; // ポーズメニューオブジェクトへの参照
+    [SerializeField] private GameObject pauseMenu;
 
     private bool isPaused = false;
 
     void Start()
     {
-        // ゲームの開始時にポーズメニューを無効にする
         if (pauseMenu != null)
         {
             pauseMenu.SetActive(false);
@@ -23,7 +22,6 @@ public class PauseManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            // ポーズと再開を切り替える
             if (isPaused)
             {
                 ResumeGame();
@@ -37,11 +35,9 @@ public class PauseManager : MonoBehaviour
 
     void PauseGame()
     {
-        Time.timeScale = 0f; // ゲームを一時停止するために時間の尺度を0に設定
+        Time.timeScale = 0f;
         isPaused = true;
-        Debug.Log("Game paused.");
 
-        // ポーズメニューを有効にする
         if (pauseMenu != null)
         {
             pauseMenu.SetActive(true);
@@ -50,11 +46,9 @@ public class PauseManager : MonoBehaviour
 
     public void ResumeGame()
     {
-        Time.timeScale = 1f; // ゲームを再開するために時間の尺度を1に設定
+        Time.timeScale = 1f;
         isPaused = false;
-        Debug.Log("Game resumed.");
 
-        // ポーズメニューを無効にする
         if (pauseMenu != null)
         {
             new WaitForSeconds(0.5f);
@@ -65,12 +59,10 @@ public class PauseManager : MonoBehaviour
     public void Disconnect()
     {
         Time.timeScale = 0f;
-        Debug.Log("Game paused.");
     }
 
     public void Reconnect()
     {
         Time.timeScale = 1f;
-        Debug.Log("Game resumed.");
     }
 }

@@ -4,6 +4,7 @@ public class SpeedBoostCircleTrigger : MonoBehaviour
 {
     public float speed = 5f;
     public int score;
+    public SpeedBoostCircles speedBoostCircles;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -17,7 +18,6 @@ public class SpeedBoostCircleTrigger : MonoBehaviour
                 {
                     Vector3 boostDirection = (other.transform.position - transform.position).normalized;
                     rb.velocity += boostDirection * speed * Time.deltaTime;
-                    Debug.Log("SpeedBoost Applied to TennisBall");
                 }
 
                 ScoreManager scoreManager = FindObjectOfType<ScoreManager>();

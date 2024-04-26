@@ -5,7 +5,7 @@ using System.Collections;
 public class Bot : MonoBehaviour
 {
     private float speed = 50;
-    private float hitForce = 50;
+    private float hitForce = 80;
 
     private GameObject ball;
     private Transform aimTarget;

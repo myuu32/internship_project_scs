@@ -14,6 +14,7 @@ public class ScoreManager : MonoBehaviour
     public TextMeshProUGUI scoreTextPlayer2Result;
     public GameObject gameStatusUI;
     public GameObject winnerImage1, winnerImage2, buttonAgain, buttonExit;
+    public Animator playerimg1, playerimg2, gameoverimg;
 
     private bool gameStatus = true;
 
@@ -25,6 +26,7 @@ public class ScoreManager : MonoBehaviour
         UpdateScoreDisplay();
         UpdateGameStatusUI();
         Time.timeScale = 1f;
+
     }
 
     private void UpdateScoreDisplay()
@@ -74,6 +76,18 @@ public class ScoreManager : MonoBehaviour
     {
         scoreTextPlayer1Result.text = scorePlayer1.ToString();
         scoreTextPlayer2Result.text = scorePlayer2.ToString();
+        gameoverimg.SetBool("shake", true);
+
+        if (scorePlayer1 > scorePlayer2)
+        {
+            playerimg1.SetBool("win", true);
+            playerimg2.SetBool("lose", true);
+        }
+        else if (scorePlayer1 < scorePlayer2)
+        {
+            playerimg1.SetBool("lose", true);
+            playerimg2.SetBool("win", true);
+        }
     }
 
     public void HandleGameStatus(int playerCount, int botCount)

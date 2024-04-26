@@ -7,6 +7,7 @@ public class CountdownTimer : MonoBehaviour
     public TMP_Text countdownText;
     public float countdownTime = 60;
     public GameObject ResultMenu;
+    public bool Timeup = false;
 
     private void Start()
     {
@@ -22,9 +23,10 @@ public class CountdownTimer : MonoBehaviour
             yield return new WaitForSeconds(1.0f);
             currentTime--;
         }
+        Timeup = true;
         countdownText.text = "0";
-        Time.timeScale = 0f;
-        FindObjectOfType<ScoreManager>()?.ShowResultMenu();
         ResultMenu.SetActive(true);
+        GameObject.Find("ScoreManager").GetComponent<ScoreManager>().ShowResultMenu();
+        Time.timeScale = 0f;
     }
 }

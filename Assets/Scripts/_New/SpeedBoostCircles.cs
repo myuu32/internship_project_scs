@@ -8,9 +8,6 @@ public class SpeedBoostCircles : MonoBehaviour
     public float changeInterval = 5.0f;
     public float range = 5f;
     public MovementDirection direction = MovementDirection.ForwardBackward;
-    private int currentIndex = -1;
-    private Vector3 startPosition;
-    private int directionSign = 1;
 
     public enum MovementDirection
     {
@@ -18,12 +15,16 @@ public class SpeedBoostCircles : MonoBehaviour
         LeftRight
     }
 
+    private int currentIndex = -1;
+    private Vector3 startPosition;
+    private int directionSign = 1;
+
     private void Start()
     {
         StartCoroutine(ActivateRandomCircle());
     }
 
-    private IEnumerator ActivateRandomCircle()
+    public IEnumerator ActivateRandomCircle()
     {
         while (true)
         {
@@ -52,6 +53,13 @@ public class SpeedBoostCircles : MonoBehaviour
         if (Mathf.Abs(Vector3.Distance(currentCircle.transform.position, startPosition)) >= range)
         {
             directionSign *= -1;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("TennisBall"))
+        {
         }
     }
 }
