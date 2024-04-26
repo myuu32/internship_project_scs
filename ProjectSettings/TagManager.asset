@@ -23,6 +23,8 @@ TagManager:
   - SpeedBoostCircles
   - GetPoint1
   - GetPoint2
+  - Player1Score
+  - Player2Score
   layers:
   - Default
   - TransparentFX

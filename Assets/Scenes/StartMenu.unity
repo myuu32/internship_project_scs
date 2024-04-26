@@ -2729,6 +2729,7 @@ GameObject:
   - component: {fileID: 2144790088}
   - component: {fileID: 2144790091}
   - component: {fileID: 2144790092}
+  - component: {fileID: 2144790093}
   m_Layer: 5
   m_Name: StartButton
   m_TagString: Untagged
@@ -2824,6 +2825,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 2144790093}
+        m_TargetAssemblyTypeName: EnterKey, Assembly-CSharp
+        m_MethodName: OnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &2144790089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2896,6 +2909,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2144790093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2144790086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40cf5658db2ce49a4b4685a815304c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 2144790088}
 --- !u!1001 &7817240802296391418
 PrefabInstance:
   m_ObjectHideFlags: 0
