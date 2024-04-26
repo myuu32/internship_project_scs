@@ -16,6 +16,12 @@ public class TennisBall : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
+    private void Update()
+    {
+        playerEffect1.transform.position = GameObject.FindGameObjectWithTag("Player1Score").transform.position;
+        playerEffect2.transform.position = GameObject.FindGameObjectWithTag("Player2Score").transform.position;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -43,6 +49,9 @@ public class TennisBall : MonoBehaviour
         else if (other.CompareTag("SpeedBoostCircles"))
         {
             animator.Play("onFire");
+
+            if (lastPlayerID == 1) playerEffect1.SetActive(true);
+            else if (lastPlayerID == 2) playerEffect2.SetActive(true);
         }
     }
 
