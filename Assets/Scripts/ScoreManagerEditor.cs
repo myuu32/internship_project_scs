@@ -1,0 +1,30 @@
+#if UNITY_EDITOR
+using UnityEngine;
+using UnityEditor;
+
+[CustomEditor(typeof(ScoreManager))]
+public class ScoreManagerEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        ScoreManager scoreManager = (ScoreManager)target;
+
+        if (GUILayout.Button("Add Score to Player 1"))
+        {
+            scoreManager.AddScorePlayer1(1);
+        }
+
+        if (GUILayout.Button("Add Score to Player 2"))
+        {
+            scoreManager.AddScorePlayer2(1);
+        }
+
+        if (GUILayout.Button("Show Result Menu"))
+        {
+            scoreManager.ShowResultMenu();
+        }
+    }
+}
+#endif

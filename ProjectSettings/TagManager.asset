@@ -3,7 +3,26 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Ground
+  - Enemy
+  - Item
+  - TennisBall
+  - PointA
+  - PointB
+  - AimTargetA
+  - AimTargetB
+  - Wall
+  - Bot
+  - WallA
+  - WallB
+  - BallPointA
+  - BallPointB
+  - Serve1P
+  - Serve2P
+  - SpeedBoostCircles
+  - GetPoint1
+  - GetPoint2
   layers:
   - Default
   - TransparentFX
@@ -11,9 +30,9 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Player
+  - Item
+  - TennisBall
   - 
   - 
   - 
