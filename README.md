@@ -29,7 +29,7 @@ The game is played by two players, each controlling a character. Players compete
 - **F5 Key**: When the player's position is incorrect, the player can reset their position.
 
 ## Developer Information
-- **Development Studio**: Skeleton Crew Studio Intern Member
+- **Development Studio**: Skeleton Crew Studio Intern Members
 - **Contact Email**: myuu3264@gmail.com
 
 ## Version History
