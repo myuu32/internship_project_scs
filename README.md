@@ -18,8 +18,9 @@ The game is played by two players, each controlling a character. Players compete
 ## Installation Guide
 1. Download the game from releases link.
 2. Pre-set keyboard and joystick controls, or pairing between joysticks.
-3. After starting the game, follow the on-screen instructions to set up your player.
-4. Start the game.
+3. In macOS user you need to press the command key to start the game.
+4. After starting the game, follow the on-screen instructions to set up your player.
+5. Start the game.
 
 ## Keyboard&Gamepad
 - **WASD / LeftStick**: Move 
