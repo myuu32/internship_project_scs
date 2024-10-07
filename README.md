@@ -3,6 +3,9 @@
 ## Introduction
 The game is played by two players, each controlling a character. Players compete to score points within a set time limit. The player with the highest score at the end of the game is declared the winner.
 
+## Gameplay Video
+[Watch Gameplay Video](https://drive.google.com/file/d/11BE9vC57OzP8t8I9SrVB8EZgWOZ8uQSi/view?usp=sharing)
+
 ## Features
 - **Time-based competition**: Players compete within a set time frame.
 - **Cute art style**: The game features cute art style.
